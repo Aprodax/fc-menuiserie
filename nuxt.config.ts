@@ -17,7 +17,12 @@ export default defineNuxtConfig({
       htmlAttrs: { lang: 'fr' },
       viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
-      meta: [{ name: 'theme-color', content: '#ffffff' }],
+      meta: [
+        { name: 'theme-color', content: '#ffffff' },
+        // Le site est dessiné en clair : on interdit l'assombrissement automatique
+        // de certains navigateurs (Chrome, Samsung Internet), qui inverse les couleurs.
+        { name: 'color-scheme', content: 'only light' },
+      ],
     },
   },
 

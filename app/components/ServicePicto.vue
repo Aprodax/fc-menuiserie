@@ -53,6 +53,13 @@ defineProps<{ name: PictoName }>()
       <path d="M2 56h60" />
     </g>
 
+    <g v-else-if="name === 'garage'">
+      <rect x="10" y="14" width="44" height="42" />
+      <path d="M13 23h38M13 32h38M13 41h38M13 50h38" />
+      <path d="M29 46h6" />
+      <path d="M4 56h56" />
+    </g>
+
     <g v-else-if="name === 'glass'">
       <rect x="12" y="8" width="40" height="46" />
       <rect x="16" y="12" width="32" height="38" />

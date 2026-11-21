@@ -19,7 +19,7 @@ useSeoMeta({
         <div class="hero__text">
           <h1 id="hero-title">Dépannage de menuiseries aluminium.</h1>
           <p class="lead">
-            Baie qui coince, volet roulant bloqué, serrure cassée, vitre fêlée :
+            Volet roulant bloqué, baie qui coince, porte de garage en panne, vitre fêlée :
             nous réparons à {{ city }} et dans un rayon de {{ business.serviceArea.radiusKm }} km.
           </p>
           <!-- Sur mobile, la barre d'action du bas remplit ce rôle : pas de doublon. -->
@@ -31,7 +31,7 @@ useSeoMeta({
             </a>
           </div>
         </div>
-        <BayDrawing class="hero__drawing" />
+        <ShutterDrawing class="hero__drawing" />
       </div>
     </section>
 

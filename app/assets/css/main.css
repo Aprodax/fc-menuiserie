@@ -65,6 +65,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
+  color-scheme: only light;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   scroll-padding-top: calc(var(--header-h) + 16px);

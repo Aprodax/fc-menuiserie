@@ -3,7 +3,7 @@
  * L'accueil, la page Réparations, le formulaire de contact et le plan du site suivent
  * automatiquement. ⚠️ Liste à faire valider : pannes et interventions réellement assurées.
  */
-export type PictoName = 'window' | 'slider' | 'door' | 'shutter' | 'gate' | 'glass'
+export type PictoName = 'window' | 'slider' | 'door' | 'shutter' | 'gate' | 'glass' | 'garage'
 
 export interface Service {
   slug: string
@@ -100,6 +100,26 @@ export const services: Service[] = [
       'Réglage des paumelles et de la porte',
       'Remplacement de ferme-porte et de gâche électrique',
       'Reprise de l’étanchéité et du seuil',
+    ],
+  },
+  {
+    slug: 'porte-garage',
+    title: 'Portes de garage',
+    keyword: 'Dépannage de porte de garage',
+    picto: 'garage',
+    excerpt: 'Bloquée, bruyante ou motorisation en panne.',
+    intro: 'Sectionnelle, enroulable ou basculante : une porte de garage qui se bloque ou force se répare le plus souvent par un réglage, une pièce d’usure ou la motorisation.',
+    problems: [
+      'La porte ne s’ouvre plus ou s’arrête en cours de route',
+      'Elle force, grince ou sort de ses rails',
+      'La télécommande ou le moteur ne répond plus',
+      'Un panneau ou un joint est abîmé',
+    ],
+    repairs: [
+      'Réglage des rails, des galets et de l’équilibrage',
+      'Dépannage de la motorisation et des télécommandes',
+      'Remplacement de câbles, de galets ou de joints',
+      'Remplacement de panneau ou de lame endommagée',
     ],
   },
   {
