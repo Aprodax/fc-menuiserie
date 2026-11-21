@@ -1,100 +1,84 @@
-# Site vitrine — menuiserie aluminium
+# Site vitrine — dépannage de menuiseries aluminium
 
-Nuxt 4 (Vue 3 + TypeScript), pages pré-générées en HTML pour le référencement, hébergé sur Fly.io (Cloudflare Workers possible aussi).
+Nuxt 4 (Vue 3 + TypeScript), pages pré-générées en HTML pour le référencement, servies par un serveur Node sur Fly.io.
 
 ```bash
 pnpm install
-pnpm dev        # http://localhost:3000
-pnpm build      # génère .output/ (serveur Node)
-pnpm preview    # build + lance le serveur de production en local
+pnpm dev         # http://localhost:3000
+pnpm test        # tests unitaires (validation du formulaire, e-mail)
 pnpm typecheck
+pnpm build       # génère .output/ (serveur Node autonome)
+pnpm preview     # build + serveur de production en local
+pnpm run deploy  # = fly deploy --remote-only
 ```
 
 ## À remplir avant la mise en ligne
 
-Tout est centralisé dans **`shared/business.ts`** : nom, téléphone, adresse, horaires, zone d'intervention, engagements, mentions légales (SIRET, assurance décennale, médiateur de la consommation…). Les valeurs actuelles sont des exemples.
+- **`shared/business.ts`** : nom, e-mail, adresse, horaires, zone d'intervention, engagements, mentions légales (SIRET, assurance, médiateur de la consommation). Les valeurs marquées comme exemples sont fausses.
+- **`shared/services.ts`** : les réparations proposées (une entrée = une page `/reparations/<slug>`), avec les pannes courantes et les interventions. À faire valider par le réparateur.
+- **`draft: false`** dans `business.ts` le jour de la mise en ligne. Tant qu'il vaut `true`, le site est en `noindex` (robots.txt `Disallow: /` + balise meta) : visible avec le lien, invisible pour Google.
 
-Tant que `draft: true`, le site est marqué `noindex` (robots.txt `Disallow: /` + balise meta) : on peut le montrer sans que Google l'indexe. **Passer `draft: false` le jour de la mise en ligne**, sinon le site n'apparaîtra jamais dans Google.
-
-Les textes des prestations sont dans **`shared/services.ts`** : une entrée = une page `/prestations/<slug>`. L'accueil, la liste, le formulaire et le sitemap suivent automatiquement. Fais-les relire : ce sont des textes génériques corrects, pas encore la réalité de l'entreprise.
-
-## Structure
+## Architecture
 
 ```
-shared/            données partagées entre pages et serveur
-  business.ts      infos entreprise (seul fichier à remplir)
-  services.ts      prestations
-  contact.ts       règles de validation du formulaire (client + serveur)
-server/api/
-  contact.post.ts  envoi du formulaire par e-mail (Resend)
+shared/                  données et règles communes au navigateur et au serveur
+  business.ts            infos de l'entreprise (le seul fichier « contenu » à remplir)
+  services.ts            réparations proposées
+  contact.ts             validation du formulaire (zod) + mise en forme de l'e-mail
+server/
+  api/contact.post.ts    route : pot de miel, limite de débit, validation, envoi
+  utils/mailer.ts        adaptateur d'envoi (Resend) : seul fichier qui connaît le fournisseur
+  utils/rate-limit.ts    limiteur en mémoire (5 demandes / 10 min / IP)
 app/
-  pages/           index, prestations/, prestations/[slug], contact, mentions-legales
-  components/      en-tête, pied de page, dessin de baie, pictogrammes, formulaire…
-  assets/css/      jetons de design (couleurs, typo, espacements) + styles de base
-nuxt.config.ts     modules, SEO, prérendu, cible de build (Node ou Cloudflare)
-Dockerfile         image de production pour Fly.io
-fly.toml           configuration Fly.io (région, machine, veille automatique)
-wrangler.jsonc     configuration Cloudflare Workers (alternative)
+  pages/                 index, reparations/, reparations/[slug], contact, mentions-legales
+  components/            en-tête, barre d'action mobile, formulaire, pictogrammes, dessin de baie…
+  composables/           useMenuOpen (état partagé du menu mobile)
+  utils/                 navigation
+  plugins/               focus sur le titre après chaque navigation (lecteurs d'écran)
+  assets/css/main.css    jetons de design (couleurs, typo, espacements), verre, boutons
+tests/                   tests unitaires (Vitest)
+Dockerfile, fly.toml     image et configuration Fly.io
 ```
 
-## Référencement : ce qui est en place
+Principes : le contenu vit dans `shared/` (données typées, pas dans les composants) ; la validation est écrite une fois et appliquée des deux côtés ; la route serveur orchestre, les détails (fournisseur d'e-mail, limite de débit) sont dans `server/utils`.
 
-- HTML complet généré au build pour chaque page (aucune page vide côté Google).
-- Titre et description propres à chaque page, avec le mot-clé et la ville.
-- Données structurées : `LocalBusiness` (fiche entreprise), `Service` par prestation, fil d'Ariane.
-- `sitemap.xml`, `robots.txt`, URL canoniques, balises Open Graph.
-- Une page par prestation, avec maillage interne entre elles.
-- Lighthouse mobile : performance 97–98, accessibilité 100, bonnes pratiques 100, SEO 100.
+## Référencement
 
-À faire une fois en ligne : créer la **fiche Google Business Profile** (c'est elle qui fait apparaître l'entreprise sur la carte), déclarer le site dans **Google Search Console** et y soumettre `https://<domaine>/sitemap.xml`.
+- HTML complet généré au build pour chaque page.
+- Titre et description par page, avec la recherche visée et la ville (« Réparation de baie coulissante à Angers »…).
+- Données structurées : `LocalBusiness`, `Service` par réparation, fil d'Ariane.
+- `sitemap.xml`, `robots.txt`, URL canoniques, Open Graph. Anciennes URL `/prestations/*` redirigées (301) vers `/reparations`.
+- Fichiers pré-compressés (Brotli + gzip) : le serveur Node et le proxy Fly ne compressent pas à la volée.
+
+À faire une fois en ligne : fiche **Google Business Profile**, **Google Search Console** avec le sitemap.
 
 ## Formulaire de contact
 
-`POST /api/contact` valide les données avec les mêmes règles que le navigateur (`shared/contact.ts`), filtre les robots (champ caché) et envoie un e-mail texte via l'API [Resend](https://resend.com) (gratuit jusqu'à 3 000 e-mails/mois). La réponse se fait directement au client (`reply_to`).
+`POST /api/contact` : pot de miel, limite de débit par IP, validation zod (`shared/contact.ts`), puis envoi d'un e-mail texte via Resend (`reply_to` = le client s'il a laissé son e-mail).
 
-- En local sans clé : le message s'affiche dans le terminal au lieu d'être envoyé.
-- En production : créer un compte Resend, vérifier le domaine (enregistrements DNS), créer une clé API.
+Variables (secrets Fly) :
 
-Variables : `NUXT_RESEND_API_KEY` (obligatoire), `NUXT_CONTACT_TO` (par défaut l'e-mail de `business.ts`), `NUXT_CONTACT_FROM` (adresse sur le domaine vérifié). Voir `.env.example`.
+| Variable | Rôle |
+|---|---|
+| `NUXT_RESEND_API_KEY` | obligatoire pour envoyer |
+| `NUXT_CONTACT_TO` | adresse qui reçoit les demandes (par défaut l'e-mail de `business.ts`) |
+| `NUXT_CONTACT_FROM` | expéditeur ; par défaut `onboarding@resend.dev` |
 
-## Déploiement sur Fly.io (cible actuelle)
+Sans nom de domaine : créer le compte Resend **avec l'adresse qui reçoit les demandes** (l'expéditeur de test n'écrit qu'au titulaire du compte). Avec un domaine : le vérifier chez Resend et mettre `NUXT_CONTACT_FROM=Site web <formulaire@domaine.fr>`. En local sans clé, le message s'affiche dans le terminal.
 
-`fly deploy` construit le `Dockerfile` sur les serveurs de Fly : build Nuxt (pages pré-générées), puis image finale avec le seul serveur Node autonome (`.output/`). Région Paris (`cdg`), une petite machine (shared-cpu-1x, 256 Mo) qui se met en veille sans visiteur et se réveille à la première requête.
-
-```bash
-fly auth login
-fly secrets set NUXT_RESEND_API_KEY=re_xxx     # active l'envoi du formulaire
-pnpm run deploy                                # = fly deploy
-```
-
-Domaine personnalisé : `fly certs add www.ton-domaine.fr`, puis créer chez le registraire les enregistrements DNS indiqués par Fly. Mettre ensuite la nouvelle URL dans `business.url`.
-
-## Alternative : Cloudflare Workers (gratuit)
-
-Le projet sait aussi se construire pour Cloudflare (`wrangler.jsonc`) : les pages sont servies par le CDN, seul `/api/contact` exécute le worker.
+## Déploiement (Fly.io)
 
 ```bash
-npx wrangler login
-npx wrangler secret put NUXT_RESEND_API_KEY
-pnpm run deploy:cloudflare     # → https://fc-menuiserie.<compte>.workers.dev
+fly secrets set NUXT_RESEND_API_KEY=re_xxx NUXT_CONTACT_TO=adresse@entreprise.fr
+pnpm run deploy
 ```
 
-Domaine personnalisé : ajouter le domaine au compte Cloudflare, puis *Workers & Pages → fc-menuiserie → Settings → Domains & Routes → Add custom domain*. Penser à mettre la vraie URL dans `business.url` (sitemap et URL canoniques en dépendent).
+L'image est construite chez Fly (Dockerfile multi-étapes : build Nuxt, puis image finale avec le seul `.output/`, utilisateur non root). Région Paris, une machine de 256 Mo qui se met en veille sans visiteur. Domaine personnalisé : `fly certs add www.domaine.fr`, puis les enregistrements DNS indiqués, puis la nouvelle URL dans `business.url`.
 
-Déploiement automatique à chaque push : *Workers & Pages → fc-menuiserie → Settings → Builds → Connect* (dépôt GitHub, commande de build `pnpm build`, commande de déploiement `npx wrangler deploy`).
+## Design
 
-## Choix de design
-
-- Style minimaliste « suisse » : blanc, gris alu, filets de 1 px, une seule couleur d'accent. C'est le style que recommande le skill ui-ux-pro-max pour les artisans et le bâtiment.
-- Couleurs tirées du métier : RAL 7016 gris anthracite (la teinte la plus posée) et un cuivre pour les cotes. Contrastes WCAG AA vérifiés, valeurs commentées dans `main.css`.
-- Visuels dessinés comme des plans de menuiserie (élévation de baie avec cotes en mm, pictogrammes avec sens d'ouverture), en attendant les vraies photos de chantiers.
-- Police Instrument Sans, auto-hébergée (aucun appel à Google côté visiteur).
-- Mobile d'abord : texte de 17 px, cibles tactiles de 44 px minimum, téléphone toujours visible dans l'en-tête, menu plein écran accessible au clavier (Échap, focus géré, reste de la page inerte).
-- Formulaire : libellés visibles, erreurs sous chaque champ et récapitulatif en haut, saisie conservée en cas d'échec, numéro de téléphone proposé en secours.
-
-## Prochaines étapes possibles
-
-- Réalisations (photos de chantiers) : collection de contenus + `@nuxt/image` pour optimiser les photos.
-- Image Open Graph (aperçu des liens partagés sur WhatsApp et Facebook) : activer `ogImage` dans `nuxt.config.ts` une fois les photos disponibles.
-- Logo définitif (remplacer `app/components/BrandMark.vue` et `public/favicon.svg`).
-- Anti-spam renforcé si besoin : Cloudflare Turnstile.
+- Sobre : blanc, gris, anthracite (RAL 7016) et **une seule couleur vive, le cuivre, réservée aux actions**.
+- Verre (« liquid glass ») uniquement pour la navigation : en-tête flottant, menu, barre d'action mobile. Repli opaque si le navigateur ne floute pas ou si l'utilisateur demande moins de transparence.
+- Mobile d'abord : l'appel est l'action principale (barre du bas « Appeler / Nous écrire »), texte de 17 px, cibles tactiles de 44 px, menu accessible au clavier.
+- Visuels dessinés comme des plans de menuiserie (baie cotée, pictogrammes), en attendant de vraies photos.
+- Lighthouse mobile : performance 97–99, accessibilité 100, bonnes pratiques 100.

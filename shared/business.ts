@@ -10,7 +10,8 @@ export const business = {
   draft: true,
 
   name: 'Menuiserie Exemple',
-  activity: 'Menuiserie aluminium',
+  /** Métier, repris dans les titres Google : c'est la recherche principale visée. */
+  activity: 'Dépannage de menuiseries aluminium',
   /**
    * Adresse publique du site, sans slash final (sitemap, URL canoniques, fiche Google).
    * À remplacer par le nom de domaine le jour où il existe.
@@ -20,7 +21,7 @@ export const business = {
   /** `display` est affiché ; `e164` sert aux liens tel: (un clic sur mobile propose l'appel). */
   phone: { display: '06 11 77 21 70', e164: '+33611772170' },
   email: 'contact@menuiserie-exemple.fr',
-  /** Délai de rappel promis après une demande de devis : ne promets que ce qui est tenable. */
+  /** Délai de rappel promis après une demande en ligne : ne promets que ce qui est tenable. */
   responseDelay: 'sous 48 heures ouvrées',
 
   address: {
@@ -51,12 +52,12 @@ export const business = {
     ],
   },
 
-  /** Engagements affichés sur l'accueil. N'écris que ce qui est vrai et vérifiable. */
+  /** Engagements affichés sur l'accueil. ⚠️ N'écris que ce qui est vrai et vérifiable. */
   commitments: [
-    { title: 'Devis gratuit et détaillé', text: 'Après une visite sur place et un relevé de cotes précis.' },
-    { title: 'Fabrication sur mesure', text: 'Chaque menuiserie est commandée à vos dimensions exactes.' },
-    { title: 'Pose par nos soins', text: 'Le même artisan suit votre chantier, de la visite aux réglages.' },
-    { title: 'Garantie décennale', text: 'Vos travaux de pose sont couverts pendant dix ans.' },
+    { title: 'Réparer plutôt que remplacer', text: 'Nous changeons la pièce en cause, pas toute la menuiserie.' },
+    { title: 'Prix annoncé avant d’intervenir', text: 'Vous savez ce que coûte la réparation avant que nous commencions.' },
+    { title: 'Un interlocuteur direct', text: 'Vous parlez au réparateur lui-même, pas à un standard.' },
+    { title: 'Toutes marques', text: 'Baies, fenêtres, volets et portes aluminium, quel que soit le fabricant.' },
   ],
 
   /**
@@ -73,6 +74,7 @@ export const business = {
     rcs: 'RCS Angers 000 000 000',
     vat: 'FR00 000000000',
     publisher: 'Prénom Nom, gérant',
+    /** Responsabilité civile professionnelle (et décennale si l'activité l'exige). */
     insurance: {
       insurer: 'Nom de l’assureur',
       address: 'Adresse de l’assureur',
@@ -87,8 +89,6 @@ export const business = {
     },
   },
 }
-
-export type Business = typeof business
 
 export const telHref = `tel:${business.phone.e164}`
 export const mailHref = `mailto:${business.email}`

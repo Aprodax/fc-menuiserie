@@ -6,9 +6,9 @@ const fields: { key: ContactField, label: string }[] = [
   { key: 'name', label: 'Nom et prénom' },
   { key: 'phone', label: 'Téléphone' },
   { key: 'email', label: 'E-mail' },
-  { key: 'town', label: 'Commune du chantier' },
-  { key: 'project', label: 'Type de projet' },
-  { key: 'message', label: 'Votre projet' },
+  { key: 'town', label: 'Commune' },
+  { key: 'project', label: 'Ce qui est en panne' },
+  { key: 'message', label: 'La panne' },
 ]
 const labelOf = (key: ContactField) => fields.find(f => f.key === key)?.label ?? key
 
@@ -22,7 +22,7 @@ const form = reactive<ContactInput & { website: string }>({
   website: '', // pot de miel
 })
 
-// Lien « Demander un devis » depuis une prestation : /contact?projet=fenetres pré-sélectionne le projet.
+// Depuis une page réparation : /contact?projet=volets-roulants pré-sélectionne la menuiserie.
 // La page est pré-générée sans paramètre : on suit la route, qui reçoit sa query après l'hydratation.
 const route = useRoute()
 watch(() => route.query.projet, (projet) => {
@@ -92,7 +92,7 @@ async function submit() {
     <Icon name="lucide:circle-check" class="form-success__icon" aria-hidden="true" />
     <h3>Merci, votre demande est bien envoyée.</h3>
     <p>
-      Nous vous rappelons {{ business.responseDelay }} au {{ form.phone }} pour convenir d’un rendez-vous.
+      Nous vous rappelons {{ business.responseDelay }} au {{ form.phone }} pour convenir d’un passage.
     </p>
   </div>
 
@@ -151,7 +151,7 @@ async function submit() {
       </div>
 
       <div class="field" :class="{ 'field--error': errors.town }">
-        <label for="field-town">Commune du chantier</label>
+        <label for="field-town">Commune</label>
         <input
           id="field-town" v-model="form.town" type="text" name="town" autocomplete="address-level2" required
           :aria-invalid="!!errors.town" :aria-describedby="describedBy('town')"
@@ -164,7 +164,7 @@ async function submit() {
     </div>
 
     <div class="field" :class="{ 'field--error': errors.project }">
-      <label for="field-project">Type de projet</label>
+      <label for="field-project">Ce qui est en panne</label>
       <div class="field__select">
         <select
           id="field-project" v-model="form.project" name="project" required
@@ -182,9 +182,9 @@ async function submit() {
     </div>
 
     <div class="field" :class="{ 'field--error': errors.message }">
-      <label for="field-message">Votre projet</label>
+      <label for="field-message">La panne</label>
       <p id="message-help" class="field__help">
-        Nombre de menuiseries, dimensions approximatives, délai souhaité… Quelques lignes suffisent.
+        Ce qui ne fonctionne plus, depuis quand, la marque si vous la connaissez. Quelques lignes suffisent.
       </p>
       <textarea
         id="field-message" v-model="form.message" name="message" rows="6" required

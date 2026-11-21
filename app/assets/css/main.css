@@ -15,10 +15,8 @@
   --c-anthracite-deep: #2a2e31;
   --c-accent: #a8431c;           /* cuivre : la couleur des actions, 6:1 sur blanc */
   --c-accent-deep: #8c3715;
-  --c-glass: #e6edf0;
   --c-on-dark: #f3f3f1;          /* 9.8:1 sur 7016 */
   --c-on-dark-2: #c5c9cc;        /* 6.5:1 sur 7016 */
-  --c-accent-on-dark: #e8a07f;   /* 5:1 sur 7016 */
   --c-error: #b3261e;            /* 6.5:1 */
   --c-success: #1d6b3f;          /* 6.5:1 */
   --c-focus: var(--c-accent);
@@ -46,7 +44,6 @@
 
   --radius-sm: 10px;
   --radius: 16px;
-  --radius-lg: 24px;
   --radius-xl: 32px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -173,20 +170,8 @@ button { cursor: pointer; }
 
 .section { padding-block: var(--section-y); }
 .section--surface { background: var(--c-surface); }
-.section--dark {
-  --c-focus: #ffffff;
-  background: var(--c-anthracite);
-  color: var(--c-on-dark);
-}
 
 .section-title { margin-bottom: clamp(24px, 4vw, 48px); }
-
-.section-head {
-  display: grid;
-  gap: 16px;
-  margin-bottom: clamp(32px, 5vw, 64px);
-  max-width: 46rem;
-}
 
 .lead {
   font-size: var(--fs-lead);
@@ -194,7 +179,6 @@ button { cursor: pointer; }
   color: var(--c-ink-2);
   max-width: 40em;
 }
-.section--dark .lead { color: var(--c-on-dark-2); }
 
 .muted { color: var(--c-ink-2); }
 .small { font-size: var(--fs-small); }
@@ -221,16 +205,6 @@ button { cursor: pointer; }
   text-decoration: none;
 }
 .skip-link:focus { top: 12px; }
-
-/* Papier millimétré discret, pour les dessins techniques */
-.paper {
-  background-color: #fafaf8;
-  background-image:
-    linear-gradient(to right, #ecece8 1px, transparent 1px),
-    linear-gradient(to bottom, #ecece8 1px, transparent 1px);
-  background-size: 24px 24px;
-  background-position: -1px -1px;
-}
 
 /* ==========================================================================
    Boutons
@@ -270,12 +244,6 @@ button { cursor: pointer; }
 
 .btn--secondary { border-color: var(--c-line-strong); color: var(--c-ink); background: transparent; }
 .btn--secondary:hover { border-color: var(--c-ink); background: var(--c-surface); }
-
-.btn--light { background: #fff; color: var(--c-ink); }
-.btn--light:hover { background: var(--c-surface); }
-
-.btn--outline-light { border-color: rgb(255 255 255 / 0.45); color: #fff; background: transparent; }
-.btn--outline-light:hover { border-color: #fff; background: rgb(255 255 255 / 0.08); }
 
 .btn--sm { min-height: 44px; padding: 0 20px; font-size: var(--fs-small); }
 

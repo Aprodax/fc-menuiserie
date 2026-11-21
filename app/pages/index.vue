@@ -5,9 +5,9 @@ const { city } = business.address
 
 useSeoMeta({
   // Sur l'accueil, le titre complet est écrit à la main (pas de « · nom du site » ajouté).
-  title: `${business.activity} à ${city} : fenêtres, baies, portes et portails · ${business.name}`,
+  title: `${business.activity} à ${city} · ${business.name}`,
   titleTemplate: '%s',
-  description: `${business.name}, ${business.activity.toLowerCase()} à ${city}. Fenêtres, baies coulissantes, portes d’entrée, volets, portails et pergolas sur mesure, posés par nos soins. Devis gratuit.`,
+  description: `Baie qui coince, volet roulant bloqué, serrure cassée, vitre fêlée : ${business.name} répare vos menuiseries aluminium à ${city} et alentours. ${business.phone.display}.`,
 })
 </script>
 
@@ -17,14 +17,14 @@ useSeoMeta({
     <section class="hero" aria-labelledby="hero-title">
       <div class="container hero__grid">
         <div class="hero__text">
-          <h1 id="hero-title">Fenêtres, portes et baies en aluminium.</h1>
+          <h1 id="hero-title">Dépannage de menuiseries aluminium.</h1>
           <p class="lead">
-            Sur mesure et posées par nos soins, à {{ city }} et dans un rayon
-            de {{ business.serviceArea.radiusKm }} km. Devis gratuit.
+            Baie qui coince, volet roulant bloqué, serrure cassée, vitre fêlée :
+            nous réparons à {{ city }} et dans un rayon de {{ business.serviceArea.radiusKm }} km.
           </p>
           <!-- Sur mobile, la barre d'action du bas remplit ce rôle : pas de doublon. -->
           <div class="hero__actions">
-            <NuxtLink to="/contact" class="btn btn--primary">Demander un devis gratuit</NuxtLink>
+            <NuxtLink to="/contact" class="btn btn--primary">Demander une intervention</NuxtLink>
             <a :href="telHref" class="link-arrow">
               <Icon name="lucide:phone" aria-hidden="true" />
               <span class="tabular">{{ business.phone.display }}</span>
@@ -37,14 +37,14 @@ useSeoMeta({
 
     <section class="section" aria-labelledby="services-title">
       <div class="container">
-        <h2 id="services-title" class="section-title">Nos prestations</h2>
+        <h2 id="services-title" class="section-title">Ce que nous réparons</h2>
         <ServiceGrid />
       </div>
     </section>
 
     <section class="section section--surface" aria-labelledby="why-title">
       <div class="container">
-        <h2 id="why-title" class="section-title">Un seul artisan, du devis à la pose</h2>
+        <h2 id="why-title" class="section-title">Un réparateur, pas un vendeur</h2>
         <ul role="list" class="points">
           <li v-for="c in business.commitments" :key="c.title" class="point">
             <Icon name="lucide:check" class="point__icon" aria-hidden="true" />

@@ -1,139 +1,141 @@
 /**
- * Les prestations : une entrée = une page /prestations/<slug>.
- * Ajoute, retire ou réécris librement ; l'accueil, la page Prestations,
- * le formulaire de contact et le plan du site suivent automatiquement.
+ * Les réparations proposées : une entrée = une page /reparations/<slug>.
+ * L'accueil, la page Réparations, le formulaire de contact et le plan du site suivent
+ * automatiquement. ⚠️ Liste à faire valider : pannes et interventions réellement assurées.
  */
-export type PictoName = 'window' | 'slider' | 'door' | 'shutter' | 'gate' | 'pergola'
+export type PictoName = 'window' | 'slider' | 'door' | 'shutter' | 'gate' | 'glass'
 
 export interface Service {
   slug: string
+  /** Nom de la menuiserie concernée, tel qu'un client le dirait. */
   title: string
-  /** Mot-clé principal, utilisé dans le titre de la page pour Google. */
+  /** Recherche Google visée, reprise dans le titre de la page. */
   keyword: string
   picto: PictoName
+  /** Les symptômes en une ligne : le client doit reconnaître sa panne. */
   excerpt: string
   intro: string
-  types: { name: string, text: string }[]
-  options: string[]
+  /** Pannes courantes, formulées comme le client les constate. */
+  problems: string[]
+  /** Ce que nous faisons pour y remédier. */
+  repairs: string[]
 }
 
 export const services: Service[] = [
   {
-    slug: 'fenetres',
-    title: 'Fenêtres et portes-fenêtres',
-    keyword: 'Fenêtres aluminium',
-    picto: 'window',
-    excerpt: 'À la française, oscillo-battantes ou fixes, en double ou triple vitrage.',
-    intro: 'Des fenêtres aluminium à rupture de pont thermique, fabriquées à vos dimensions, en construction neuve comme en rénovation. Leurs profilés fins laissent entrer davantage de lumière, sans rien céder sur l’isolation.',
-    types: [
-      { name: 'Ouvrant à la française', text: 'Un ou deux vantaux : le grand classique, simple et robuste.' },
-      { name: 'Oscillo-battant', text: 'S’entrouvre par le haut pour aérer en toute sécurité.' },
-      { name: 'Châssis fixe et soufflet', text: 'Pour les impostes, les pièces d’eau et les grandes vitres.' },
-      { name: 'Porte-fenêtre', text: 'Avec seuil plat possible pour un passage de plain-pied.' },
-    ],
-    options: [
-      'Double ou triple vitrage, feuilleté de sécurité',
-      'Pose en rénovation sur dormant existant ou en dépose totale',
-      'Petits-bois, vitrage dépoli ou imprimé',
-      'Bicoloration : blanc à l’intérieur, teinte au choix à l’extérieur',
-      'Entrées d’air intégrées à la menuiserie',
-    ],
-  },
-  {
     slug: 'baies-coulissantes',
     title: 'Baies vitrées coulissantes',
-    keyword: 'Baies vitrées coulissantes aluminium',
+    keyword: 'Réparation de baie coulissante',
     picto: 'slider',
-    excerpt: 'De deux à six vantaux, à galandage ou en angle, pour ouvrir grand sur le jardin.',
-    intro: 'La baie coulissante est le point fort de l’aluminium : sa rigidité autorise de grandes surfaces vitrées avec des montants très fins. Elle se manœuvre sans effort et ne prend aucune place à l’ouverture.',
-    types: [
-      { name: 'Coulissant 2, 3 ou 4 vantaux', text: 'Sur deux ou trois rails, selon la largeur de passage souhaitée.' },
-      { name: 'À galandage', text: 'Les vantaux disparaissent dans la cloison pour libérer tout le passage.' },
-      { name: 'Levant-coulissant', text: 'Pour les très grands vantaux, avec une étanchéité renforcée.' },
-      { name: 'Baie d’angle', text: 'Sans poteau d’angle, pour une vue complètement dégagée.' },
+    excerpt: 'Elle coince, déraille ou ne ferme plus.',
+    intro: 'Une baie qui force ou qui sort de son rail se répare presque toujours : roulettes usées, rail encrassé ou fermeture fatiguée. Inutile de changer toute la menuiserie.',
+    problems: [
+      'La baie est dure à faire coulisser ou se bloque',
+      'Un vantail est sorti du rail ou frotte',
+      'La poignée ou la fermeture ne verrouille plus',
+      'De l’air ou de l’eau passe sous la baie',
     ],
-    options: [
-      'Seuil encastré pour un passage sans ressaut',
-      'Fermeture multipoints et vitrage retardateur d’effraction',
-      'Motorisation des grands vantaux',
-      'Volet roulant intégré ou coffre extérieur',
-    ],
-  },
-  {
-    slug: 'portes-entree',
-    title: 'Portes d’entrée',
-    keyword: 'Portes d’entrée aluminium',
-    picto: 'door',
-    excerpt: 'Pleines ou vitrées, isolantes et sécurisées, dans le style de votre maison.',
-    intro: 'Une porte d’entrée aluminium réunit isolation, sécurité et stabilité dans le temps : elle ne gonfle pas, ne se déforme pas et ne demande pratiquement aucun entretien.',
-    types: [
-      { name: 'Panneau monobloc', text: 'Un panneau plein sur les deux faces, sans ouvrant visible, pour un rendu net.' },
-      { name: 'Porte vitrée', text: 'Vitrage feuilleté de sécurité, clair, dépoli ou décoratif.' },
-      { name: 'Avec tierce ou imposte', text: 'Un vantail secondaire ou un fixe vitré pour plus de lumière.' },
-      { name: 'Porte de service', text: 'Pour le garage, le cellier ou l’atelier.' },
-    ],
-    options: [
-      'Serrure 3 ou 5 points, cylindre de sécurité',
-      'Ouverture par empreinte digitale ou clavier à code',
-      'Barre de tirage ou poignée au choix',
-      'Seuil adapté aux personnes à mobilité réduite',
+    repairs: [
+      'Remplacement des roulettes et des galets',
+      'Nettoyage et redressage des rails',
+      'Remplacement de poignée, de fermeture ou de serrure',
+      'Réglage des vantaux et remplacement des joints',
     ],
   },
   {
-    slug: 'volets',
-    title: 'Volets roulants et battants',
-    keyword: 'Volets aluminium',
+    slug: 'volets-roulants',
+    title: 'Volets roulants',
+    keyword: 'Dépannage de volet roulant',
     picto: 'shutter',
-    excerpt: 'Roulants, battants ou coulissants, manuels, motorisés ou solaires.',
-    intro: 'Les volets aluminium protègent du soleil, du froid et des regards. Nous les posons avec des fenêtres neuves comme sur des menuiseries existantes.',
-    types: [
-      { name: 'Volet roulant', text: 'Coffre extérieur, intégré ou tunnel, selon la configuration de la baie.' },
-      { name: 'Volet battant', text: 'Plein, persienné ou à cadre, sans peinture à refaire.' },
-      { name: 'Volet coulissant', text: 'Il glisse le long de la façade, idéal pour les grandes ouvertures.' },
-      { name: 'Brise-soleil orientable', text: 'Pour régler finement la lumière et la chaleur.' },
+    excerpt: 'Bloqué, coincé de travers ou moteur en panne.',
+    intro: 'Un volet roulant bloqué empêche d’ouvrir ou de fermer la maison. Nous trouvons la cause, moteur, lames ou sangle, et remettons le volet en service.',
+    problems: [
+      'Le volet ne monte ou ne descend plus',
+      'Il est bloqué de travers ou à mi-hauteur',
+      'Le moteur tourne mais le volet ne bouge pas',
+      'La télécommande ou l’interrupteur ne répond plus',
     ],
-    options: [
-      'Motorisation filaire, radio ou solaire, sans travaux d’électricité',
-      'Commande centralisée ou depuis votre téléphone',
-      'Lames isolantes et verrous anti-relevage',
+    repairs: [
+      'Diagnostic et remplacement du moteur',
+      'Remplacement des lames abîmées',
+      'Remplacement de sangle, de treuil ou de manivelle',
+      'Réglage des fins de course et des télécommandes',
     ],
   },
   {
-    slug: 'portails-clotures',
-    title: 'Portails et clôtures',
-    keyword: 'Portails aluminium',
+    slug: 'fenetres',
+    title: 'Fenêtres et portes-fenêtres',
+    keyword: 'Réparation de fenêtre aluminium',
+    picto: 'window',
+    excerpt: 'Elle ferme mal, laisse passer l’air ou la poignée a lâché.',
+    intro: 'Une fenêtre qui frotte ou laisse passer l’air se règle ou se répare : paumelles, crémone, poignée ou joints. Vous retrouvez une fermeture nette et étanche.',
+    problems: [
+      'La fenêtre frotte ou ne ferme plus',
+      'La poignée tourne dans le vide',
+      'L’oscillo-battant ne bascule plus',
+      'Courants d’air ou infiltrations',
+    ],
+    repairs: [
+      'Réglage des ouvrants et des paumelles',
+      'Remplacement de poignée et de crémone',
+      'Réparation du mécanisme oscillo-battant',
+      'Remplacement des joints d’étanchéité',
+    ],
+  },
+  {
+    slug: 'portes',
+    title: 'Portes d’entrée',
+    keyword: 'Dépannage de porte aluminium',
+    picto: 'door',
+    excerpt: 'Serrure bloquée, porte qui frotte ou ne ferme plus.',
+    intro: 'Une porte d’entrée qui ferme mal, c’est une maison qui n’est plus protégée. Nous intervenons sur la serrure, le réglage et l’étanchéité.',
+    problems: [
+      'La serrure est bloquée ou la clé tourne mal',
+      'La porte frotte ou ne se ferme plus',
+      'Le ferme-porte ou la gâche est cassé',
+      'Le seuil laisse passer l’eau',
+    ],
+    repairs: [
+      'Remplacement de cylindre et de serrure multipoints',
+      'Réglage des paumelles et de la porte',
+      'Remplacement de ferme-porte et de gâche électrique',
+      'Reprise de l’étanchéité et du seuil',
+    ],
+  },
+  {
+    slug: 'vitrage',
+    title: 'Vitrage cassé ou embué',
+    keyword: 'Remplacement de vitrage',
+    picto: 'glass',
+    excerpt: 'Vitre fêlée, cassée ou buée entre les deux verres.',
+    intro: 'Un double vitrage cassé ou embué se remplace sans changer la menuiserie. Nous sécurisons l’ouverture si besoin, puis posons un vitrage neuf aux bonnes dimensions.',
+    problems: [
+      'Vitre fêlée ou cassée',
+      'Buée entre les deux verres du double vitrage',
+      'Vitrage qui laisse passer le froid ou le bruit',
+    ],
+    repairs: [
+      'Mise en sécurité après une casse',
+      'Prise de mesures et remplacement du double vitrage',
+      'Vitrage feuilleté de sécurité ou isolant renforcé',
+    ],
+  },
+  {
+    slug: 'portails',
+    title: 'Portails et portillons',
+    keyword: 'Réparation de portail aluminium',
     picto: 'gate',
-    excerpt: 'Battants ou coulissants, motorisés, assortis au portillon et à la clôture.',
-    intro: 'Un portail aluminium ne rouille pas et garde son aspect pendant des années. Nous réalisons l’ensemble — portail, portillon, clôture et motorisation — dans la même teinte.',
-    types: [
-      { name: 'Portail battant', text: 'Deux vantaux qui s’ouvrent vers l’intérieur de la propriété.' },
-      { name: 'Portail coulissant', text: 'Pour les entrées en pente ou quand la place manque.' },
-      { name: 'Portillon', text: 'Assorti au portail, avec serrure et gâche électrique.' },
-      { name: 'Clôture et brise-vue', text: 'Ajourés ou pleins, pour délimiter et protéger votre terrain.' },
+    excerpt: 'Il s’affaisse, frotte au sol ou la motorisation ne répond plus.',
+    intro: 'Un portail aluminium ne rouille pas, mais ses réglages et sa motorisation s’usent. Nous le remettons d’aplomb et en état de marche.',
+    problems: [
+      'Le portail s’affaisse ou frotte au sol',
+      'La motorisation ne répond plus',
+      'Le portillon ne ferme plus',
     ],
-    options: [
-      'Motorisation avec télécommandes',
-      'Visiophone et contrôle d’accès',
-      'Boîte aux lettres intégrée au pilier ou au portillon',
-    ],
-  },
-  {
-    slug: 'pergolas',
-    title: 'Pergolas bioclimatiques',
-    keyword: 'Pergolas bioclimatiques',
-    picto: 'pergola',
-    excerpt: 'Des lames orientables pour profiter de la terrasse, au soleil comme à l’ombre.',
-    intro: 'La pergola bioclimatique protège du soleil et de la pluie grâce à ses lames orientables. Adossée à la maison ou autoportée, elle prolonge la pièce de vie à l’extérieur.',
-    types: [
-      { name: 'Pergola adossée', text: 'Fixée à la façade, dans le prolongement du séjour.' },
-      { name: 'Pergola autoportée', text: 'Sur quatre poteaux, où vous voulez dans le jardin.' },
-      { name: 'Lames orientables', text: 'Elles pivotent pour ventiler, filtrer la lumière ou fermer le toit.' },
-      { name: 'Fermetures latérales', text: 'Stores verticaux, panneaux vitrés ou claustras.' },
-    ],
-    options: [
-      'Motorisation des lames et capteur de pluie',
-      'Éclairage LED intégré',
-      'Évacuation des eaux pluviales par les poteaux',
+    repairs: [
+      'Réglage des gonds et des vantaux',
+      'Dépannage de la motorisation et des télécommandes',
+      'Remplacement de serrure et de gâche',
     ],
   },
 ]

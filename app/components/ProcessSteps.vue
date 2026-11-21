@@ -1,9 +1,9 @@
 <script setup lang="ts">
 const steps = [
-  { title: 'Visite et prise de cotes', text: 'Nous venons chez vous pour comprendre le projet, vous conseiller et mesurer chaque ouverture.' },
-  { title: 'Devis détaillé', text: 'Un devis clair, poste par poste : modèles, vitrages, teintes et délais. Sans engagement.' },
-  { title: 'Fabrication sur mesure', text: 'Vos menuiseries sont fabriquées à vos dimensions. Nous fixons ensemble la date de pose.' },
-  { title: 'Pose et réglages', text: 'Pose soignée, finitions, réglages et chantier nettoyé. Nous restons joignables ensuite.' },
+  { title: 'Vous nous appelez', text: 'Décrivez la panne. Une photo envoyée par SMS nous aide souvent à prévoir la bonne pièce.' },
+  { title: 'Diagnostic sur place', text: 'Nous trouvons la pièce ou le réglage en cause.' },
+  { title: 'Prix annoncé', text: 'Vous connaissez le coût de la réparation avant que nous commencions.' },
+  { title: 'Réparation', text: 'Sur place, ou dès réception de la pièce si elle doit être commandée.' },
 ]
 </script>
 

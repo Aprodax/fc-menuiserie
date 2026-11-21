@@ -2,16 +2,16 @@
 import { business, fullAddress, mailHref, mapsHref, telHref } from '#shared/business'
 
 useSeoMeta({
-  title: `Contact et devis gratuit · ${business.activity} à ${business.address.city}`,
-  description: `Demandez votre devis gratuit pour vos fenêtres, baies, portes, volets ou portail en aluminium. ${business.name}, ${business.address.city} : ${business.phone.display}.`,
+  title: `Contact et demande d’intervention · ${business.address.city}`,
+  description: `Une menuiserie aluminium en panne ? Appelez ${business.name} au ${business.phone.display} ou décrivez la panne en ligne. ${business.address.city} et alentours.`,
 })
 </script>
 
 <template>
   <div>
     <PageIntro
-      title="Contact et devis gratuit"
-      :lead="`Décrivez votre projet en quelques lignes : nous vous rappelons ${business.responseDelay} pour fixer un rendez-vous et prendre les cotes.`"
+      title="Contact"
+      :lead="`Le plus rapide est d’appeler. Vous pouvez aussi décrire la panne ici : nous vous rappelons ${business.responseDelay}.`"
       :crumbs="[{ label: 'Accueil', to: '/' }, { label: 'Contact', to: '/contact' }]"
     />
 
@@ -29,7 +29,7 @@ useSeoMeta({
       </aside>
 
       <section class="contact__form" aria-labelledby="form-title">
-        <h2 id="form-title" class="contact__form-title">Votre demande de devis</h2>
+        <h2 id="form-title" class="contact__form-title">Demande d’intervention</h2>
         <ContactForm />
       </section>
 

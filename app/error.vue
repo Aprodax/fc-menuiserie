@@ -23,7 +23,7 @@ useSeoMeta({ title: () => (notFound.value ? 'Page introuvable' : 'Erreur'), robo
       </p>
       <div class="btn-row">
         <a href="/" class="btn btn--primary" @click.prevent="go('/')">Retour à l’accueil</a>
-        <a href="/prestations" class="btn btn--secondary" @click.prevent="go('/prestations')">Nos prestations</a>
+        <a href="/reparations" class="btn btn--secondary" @click.prevent="go('/reparations')">Nos réparations</a>
         <a :href="telHref" class="btn btn--secondary">
           <Icon name="lucide:phone" aria-hidden="true" />
           <span class="tabular">{{ business.phone.display }}</span>

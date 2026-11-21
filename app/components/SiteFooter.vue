@@ -42,7 +42,7 @@ const year = new Date().getFullYear()
     <div class="container site-footer__bottom">
       <p>© {{ year }} {{ business.name }}</p>
       <ul role="list">
-        <li><NuxtLink to="/prestations">Prestations</NuxtLink></li>
+        <li><NuxtLink to="/reparations">Réparations</NuxtLink></li>
         <li><NuxtLink to="/contact">Contact</NuxtLink></li>
         <li><NuxtLink to="/mentions-legales">Mentions légales</NuxtLink></li>
       </ul>

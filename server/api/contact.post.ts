@@ -1,6 +1,7 @@
 import { z } from 'zod'
-import { contactSchema, projectOptions } from '#shared/contact'
+import { contactSchema, formatContactEmail } from '#shared/contact'
 
+/** Reçoit une demande d'intervention, la valide et l'envoie par e-mail à l'entreprise. */
 export default defineEventHandler(async (event) => {
   const body = await readBody<Record<string, unknown> | null>(event)
 
@@ -8,6 +9,12 @@ export default defineEventHandler(async (event) => {
   // On répond « OK » sans rien envoyer pour ne pas les renseigner.
   if (typeof body?.website === 'string' && body.website !== '') {
     return { ok: true }
+  }
+
+  // Fly.io transmet l'adresse réelle du visiteur dans Fly-Client-IP.
+  const ip = getRequestHeader(event, 'fly-client-ip') ?? getRequestIP(event, { xForwardedFor: true }) ?? 'inconnue'
+  if (isRateLimited(ip)) {
+    throw createError({ statusCode: 429, statusMessage: 'Trop de demandes' })
   }
 
   const parsed = contactSchema.safeParse(body)
@@ -19,25 +26,13 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const data = parsed.data
-  const projectLabel = projectOptions.find(o => o.value === data.project)?.label ?? data.project
-  const subject = `Demande de devis · ${projectLabel} · ${data.town}`
-  const text = [
-    `Nom : ${data.name}`,
-    `Téléphone : ${data.phone}`,
-    `E-mail : ${data.email || 'non renseigné'}`,
-    `Commune du chantier : ${data.town}`,
-    `Projet : ${projectLabel}`,
-    '',
-    data.message,
-  ].join('\n')
+  const mail = formatContactEmail(parsed.data)
+  // useRuntimeConfig(event) lit les variables NUXT_* au démarrage du serveur.
+  const { resendApiKey, contactFrom, contactTo } = useRuntimeConfig(event)
 
-  // useRuntimeConfig(event) : indispensable sur Cloudflare pour lire les secrets du worker.
-  const config = useRuntimeConfig(event)
-
-  if (!config.resendApiKey) {
+  if (!resendApiKey) {
     if (import.meta.dev) {
-      console.info(`[contact] Pas de clé Resend : message affiché ici au lieu d'être envoyé.\n${subject}\n${text}`)
+      console.info(`[contact] Pas de clé Resend : message affiché ici au lieu d'être envoyé.\n${mail.subject}\n${mail.text}`)
       return { ok: true }
     }
     console.error('[contact] NUXT_RESEND_API_KEY manquante')
@@ -45,20 +40,10 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    await $fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${config.resendApiKey}` },
-      body: {
-        from: config.contactFrom,
-        to: [config.contactTo],
-        reply_to: data.email || undefined,
-        subject,
-        text,
-      },
-    })
+    await sendMail(mail, { apiKey: resendApiKey, from: contactFrom, to: contactTo })
   }
   catch (error) {
-    console.error('[contact] Échec de l’envoi via Resend', error)
+    console.error('[contact] Échec de l’envoi', error)
     throw createError({ statusCode: 502, statusMessage: 'Envoi impossible' })
   }
 

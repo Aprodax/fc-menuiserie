@@ -3,7 +3,7 @@ import type { PictoName } from '#shared/services'
 
 /**
  * Pictogrammes au trait, dessinés comme des élévations de menuiserie
- * (vue de face, ligne de sol, sens d'ouverture en pointillés).
+ * (vue de face, ligne de sol, sens d'ouverture en pointillés, vitre fêlée).
  * Le trait garde la même épaisseur quelle que soit la taille affichée.
  */
 defineProps<{ name: PictoName }>()
@@ -53,12 +53,11 @@ defineProps<{ name: PictoName }>()
       <path d="M2 56h60" />
     </g>
 
-    <g v-else-if="name === 'pergola'">
-      <rect x="6" y="18" width="52" height="6" />
-      <rect x="10" y="24" width="3.5" height="32" />
-      <rect x="50.5" y="24" width="3.5" height="32" />
-      <path d="M9 18l4-6M15 18l4-6M21 18l4-6M27 18l4-6M33 18l4-6M39 18l4-6M45 18l4-6M51 18l4-6" />
-      <path d="M2 56h60" />
+    <g v-else-if="name === 'glass'">
+      <rect x="12" y="8" width="40" height="46" />
+      <rect x="16" y="12" width="32" height="38" />
+      <path d="M31 12l-3 11 6 5-4 9 5 5-2 8M34 28l8-3M30 37l-7 3" />
+      <path d="M8 56h48" />
     </g>
   </svg>
 </template>

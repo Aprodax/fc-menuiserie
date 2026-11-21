@@ -62,7 +62,7 @@ onBeforeUnmount(() => {
           <Icon name="lucide:phone" aria-hidden="true" />
           <span class="tabular">{{ business.phone.display }}</span>
         </a>
-        <NuxtLink to="/contact" class="btn btn--primary btn--sm header-cta">Demander un devis</NuxtLink>
+        <NuxtLink to="/contact" class="btn btn--primary btn--sm header-cta">Demander une intervention</NuxtLink>
         <button
           ref="menuButton"
           type="button"
@@ -93,7 +93,7 @@ onBeforeUnmount(() => {
           </ul>
         </nav>
         <div class="menu-sheet__contact">
-          <NuxtLink to="/contact" class="btn btn--primary">Demander un devis gratuit</NuxtLink>
+          <NuxtLink to="/contact" class="btn btn--primary">Demander une intervention</NuxtLink>
           <a :href="telHref" class="btn btn--secondary">
             <Icon name="lucide:phone" aria-hidden="true" />
             <span class="tabular">{{ business.phone.display }}</span>

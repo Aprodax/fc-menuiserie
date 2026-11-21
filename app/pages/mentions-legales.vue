@@ -11,7 +11,7 @@ useSeoMeta({
 const toc = [
   { id: 'editeur', label: 'Éditeur du site' },
   { id: 'hebergeur', label: 'Hébergement' },
-  { id: 'assurance', label: 'Assurance décennale' },
+  { id: 'assurance', label: 'Assurance professionnelle' },
   { id: 'mediation', label: 'Médiation de la consommation' },
   { id: 'propriete', label: 'Propriété intellectuelle' },
   { id: 'donnees-personnelles', label: 'Données personnelles' },
@@ -59,7 +59,7 @@ const toc = [
         </section>
 
         <section id="assurance">
-          <h2>Assurance décennale</h2>
+          <h2>Assurance professionnelle</h2>
           <p>
             Assureur : {{ legal.insurance.insurer }}, {{ legal.insurance.address }}.
             {{ legal.insurance.policy }}. Couverture géographique : {{ legal.insurance.coverage }}.
@@ -93,7 +93,7 @@ const toc = [
           </p>
           <dl>
             <div><dt>Responsable du traitement</dt><dd>{{ legal.legalName }}, {{ fullAddress }}</dd></div>
-            <div><dt>Finalité</dt><dd>Répondre à votre demande et, le cas échéant, établir un devis.</dd></div>
+            <div><dt>Finalité</dt><dd>Répondre à votre demande d’intervention et, le cas échéant, établir un devis.</dd></div>
             <div><dt>Base légale</dt><dd>Mesures précontractuelles prises à votre demande (article 6.1.b du RGPD).</dd></div>
             <div><dt>Destinataires</dt><dd>{{ business.name }} uniquement. Vos données ne sont ni vendues ni utilisées à des fins publicitaires.</dd></div>
             <div><dt>Sous-traitants techniques</dt><dd>Cloudflare (hébergement du site) et Resend (acheminement de l’e-mail), qui peuvent traiter les données aux États-Unis dans le cadre du Data Privacy Framework UE–États-Unis.</dd></div>

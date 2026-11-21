@@ -1,26 +1,26 @@
 <script setup lang="ts">
 import { business, telHref } from '#shared/business'
-import { findService, services, type Service } from '#shared/services'
+import { findService, services } from '#shared/services'
+
+// Une URL inconnue (/reparations/n-importe-quoi) renvoie directement une 404.
+definePageMeta({
+  validate: route => typeof route.params.slug === 'string' && !!findService(route.params.slug),
+})
 
 const route = useRoute()
-const found = findService(String(route.params.slug))
-if (!found) {
-  throw createError({ statusCode: 404, statusMessage: 'Prestation introuvable', fatal: true })
-}
-const service: Service = found
-
+const service = findService(String(route.params.slug))! // existence garantie par validate
 const { city } = business.address
 const others = services.filter(s => s.slug !== service.slug)
 
 useSeoMeta({
   title: `${service.keyword} à ${city}`,
-  description: `${service.excerpt} Fabrication sur mesure et pose par ${business.name} à ${city} et alentours. Devis gratuit.`,
+  description: `${service.excerpt} ${business.name} répare vos menuiseries aluminium à ${city} et alentours. ${business.phone.display}.`,
 })
 
 useSchemaOrg([
   {
     '@type': 'Service',
-    'name': service.title,
+    'name': service.keyword,
     'description': service.intro,
     'serviceType': service.keyword,
     'provider': { '@id': `${business.url}/#identity` },
@@ -36,18 +36,18 @@ useSchemaOrg([
         <AppBreadcrumbs
           :items="[
             { label: 'Accueil', to: '/' },
-            { label: 'Prestations', to: '/prestations' },
-            { label: service.title, to: `/prestations/${service.slug}` },
+            { label: 'Réparations', to: '/reparations' },
+            { label: service.title, to: `/reparations/${service.slug}` },
           ]"
         />
         <div class="detail-hero__body">
           <ServicePicto :name="service.picto" class="detail-hero__picto" />
-          <h1 id="service-title">{{ service.title }}</h1>
+          <h1 id="service-title">{{ service.keyword }}</h1>
           <p class="lead">{{ service.intro }}</p>
           <!-- Sur mobile, la barre d'action du bas suffit. -->
           <div class="detail-hero__actions">
             <NuxtLink :to="{ path: '/contact', query: { projet: service.slug } }" class="btn btn--primary">
-              Demander un devis
+              Demander une intervention
             </NuxtLink>
             <a :href="telHref" class="link-arrow">
               <Icon name="lucide:phone" aria-hidden="true" />
@@ -58,40 +58,35 @@ useSchemaOrg([
       </div>
     </section>
 
-    <section class="section section--surface" aria-labelledby="types-title">
-      <div class="container">
-        <h2 id="types-title" class="section-title">Ce que nous posons</h2>
-        <ul role="list" class="types">
-          <li v-for="t in service.types" :key="t.name">
-            <h3 class="type__name">{{ t.name }}</h3>
-            <p class="muted">{{ t.text }}</p>
-          </li>
-        </ul>
+    <section class="section section--surface" aria-labelledby="problems-title">
+      <div class="container columns">
+        <div>
+          <h2 id="problems-title" class="section-title">Pannes courantes</h2>
+          <ul role="list" class="list">
+            <li v-for="p in service.problems" :key="p">
+              <Icon name="lucide:circle-alert" class="list__icon list__icon--problem" aria-hidden="true" />
+              <span>{{ p }}</span>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2 id="repairs-title" class="section-title">Ce que nous faisons</h2>
+          <ul role="list" class="list">
+            <li v-for="r in service.repairs" :key="r">
+              <Icon name="lucide:check" class="list__icon" aria-hidden="true" />
+              <span>{{ r }}</span>
+            </li>
+          </ul>
+        </div>
       </div>
     </section>
 
-    <section class="section" aria-labelledby="options-title">
+    <nav class="section" aria-labelledby="others-title">
       <div class="container">
-        <h2 id="options-title" class="section-title">Options et finitions</h2>
-        <ul role="list" class="options">
-          <li v-for="o in service.options" :key="o">
-            <Icon name="lucide:check" aria-hidden="true" />
-            <span>{{ o }}</span>
-          </li>
-          <li>
-            <Icon name="lucide:check" aria-hidden="true" />
-            <span>Toutes les teintes RAL, mates, satinées ou texturées</span>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <nav class="section section--surface" aria-labelledby="others-title">
-      <div class="container">
-        <h2 id="others-title" class="section-title others__title">Nos autres prestations</h2>
+        <h2 id="others-title" class="section-title others__title">Autres réparations</h2>
         <ul role="list" class="others">
           <li v-for="s in others" :key="s.slug">
-            <NuxtLink :to="`/prestations/${s.slug}`" class="other">
+            <NuxtLink :to="`/reparations/${s.slug}`" class="other">
               {{ s.title }}
               <Icon name="lucide:chevron-right" aria-hidden="true" />
             </NuxtLink>
@@ -108,19 +103,19 @@ useSchemaOrg([
 .detail-hero__picto { width: 56px; height: 56px; }
 .detail-hero__actions { display: none; }
 
-.types { list-style: none; display: grid; gap: 24px; }
-.type__name { font-size: var(--fs-body); margin-bottom: 4px; }
+.columns { display: grid; gap: 48px; }
 
-.options { list-style: none; display: grid; max-width: 46rem; }
-.options li {
+.list { list-style: none; display: grid; }
+.list li {
   display: grid;
   grid-template-columns: 22px 1fr;
   gap: 14px;
   padding-block: 14px;
   border-bottom: 1px solid var(--c-line);
 }
-.options li:first-child { border-top: 1px solid var(--c-line); }
-.options svg { width: 22px; height: 22px; color: var(--c-accent); margin-top: 2px; }
+.list li:first-child { border-top: 1px solid var(--c-line); }
+.list__icon { width: 22px; height: 22px; margin-top: 2px; color: var(--c-accent); }
+.list__icon--problem { color: var(--c-ink-2); }
 
 .others__title { font-size: var(--fs-h3); }
 .others { list-style: none; display: grid; border-top: 1px solid var(--c-line); }
@@ -137,14 +132,13 @@ useSchemaOrg([
 .other:hover { text-decoration: underline; text-underline-offset: 0.2em; }
 
 @media (min-width: 768px) {
-  .types { grid-template-columns: repeat(2, 1fr); gap: 32px 48px; }
   .others { grid-template-columns: repeat(2, 1fr); column-gap: 48px; }
 }
 @media (min-width: 960px) {
   .detail-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 8px; }
 }
 @media (min-width: 1024px) {
-  .types { grid-template-columns: repeat(4, 1fr); }
+  .columns { grid-template-columns: 1fr 1fr; gap: 80px; }
   .others { grid-template-columns: repeat(3, 1fr); }
 }
 </style>

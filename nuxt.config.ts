@@ -1,12 +1,5 @@
 import { business } from './shared/business'
 
-/**
- * Cible de build. Par défaut un serveur Node (Fly.io, Dockerfile).
- * Pour Cloudflare Workers : NITRO_PRESET=cloudflare_module pnpm build (voir wrangler.jsonc).
- */
-const preset = process.env.NITRO_PRESET || 'node_server'
-const onCloudflare = preset.startsWith('cloudflare')
-
 if (business.draft) {
   console.warn('\n⚠️  shared/business.ts : draft = true → le site est marqué « noindex » (invisible pour Google).\n')
 }
@@ -32,7 +25,7 @@ export default defineNuxtConfig({
   site: {
     url: business.url,
     name: business.name,
-    description: `${business.activity} à ${business.address.city} : fenêtres, baies coulissantes, portes d’entrée, volets, portails et pergolas sur mesure, posés par nos soins.`,
+    description: `${business.activity} à ${business.address.city} : baies coulissantes, volets roulants, fenêtres, portes, vitrages et portails. Réparation et dépannage.`,
     defaultLocale: 'fr',
     separator: '·',
     indexable: !business.draft,
@@ -82,23 +75,28 @@ export default defineNuxtConfig({
   runtimeConfig: {
     resendApiKey: '',
     contactTo: business.email,
-    contactFrom: `Site web <formulaire@${new URL(business.url).hostname.replace(/^www\./, '')}>`,
+    // Expéditeur de test de Resend : il n'écrit qu'à l'adresse du compte Resend, ce qui suffit
+    // tant que le compte est créé avec l'e-mail de l'entreprise. À remplacer par une adresse
+    // du nom de domaine une fois celui-ci vérifié chez Resend.
+    contactFrom: 'Site web <onboarding@resend.dev>',
+  },
+
+  // Anciennes adresses (avant le passage au dépannage) : on renvoie vers les réparations.
+  routeRules: {
+    '/prestations': { redirect: { to: '/reparations', statusCode: 301 } },
+    '/prestations/**': { redirect: { to: '/reparations', statusCode: 301 } },
   },
 
   nitro: {
-    // Toutes les pages sont générées au build ; le serveur ne fait que les servir
-    // et exécuter /api/contact.
-    preset,
+    // Serveur Node (image Docker sur Fly.io). Toutes les pages sont générées au build :
+    // le serveur ne fait que les servir et exécuter /api/contact.
+    preset: 'node_server',
     // Fichiers pré-compressés (Brotli + gzip) au build : le serveur Node ne compresse pas
     // à la volée et le proxy de Fly non plus.
     compressPublicAssets: { gzip: true, brotli: true },
     prerender: {
       crawlLinks: true,
       routes: ['/', '/sitemap.xml', '/robots.txt'],
-      // Sur Cloudflare : /prestations → prestations.html (et non prestations/index.html),
-      // sinon Cloudflare redirige /prestations vers /prestations/. Le serveur Node, lui,
-      // ne sait servir que prestations/index.html (comportement par défaut).
-      autoSubfolderIndex: !onCloudflare,
     },
   },
 })

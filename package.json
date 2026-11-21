@@ -6,10 +6,9 @@
     "dev": "nuxt dev",
     "build": "nuxt build",
     "preview": "nuxt build && nuxt preview",
-    "deploy": "fly deploy",
-    "preview:cloudflare": "NITRO_PRESET=cloudflare_module nuxt build && wrangler dev",
-    "deploy:cloudflare": "NITRO_PRESET=cloudflare_module nuxt build && wrangler deploy",
+    "test": "vitest run",
     "typecheck": "nuxt typecheck",
+    "deploy": "fly deploy --remote-only",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
@@ -25,8 +24,8 @@
   "devDependencies": {
     "@types/node": "^24.19.2",
     "typescript": "^6.0.3",
-    "vue-tsc": "^3.3.14",
-    "wrangler": "^4.165.0"
+    "vitest": "^5.1.1",
+    "vue-tsc": "^3.3.14"
   },
   "packageManager": "pnpm@11.23.0"
 }
