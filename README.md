@@ -45,7 +45,7 @@ Principes : le contenu vit dans `shared/` (données typées, pas dans les compos
 ## Référencement
 
 - HTML complet généré au build pour chaque page.
-- Titre et description par page, avec la recherche visée et la ville (« Réparation de baie coulissante à Angers »…).
+- Titre et description par page, avec la recherche visée et la ville (« Réparation de baie coulissante à Bordeaux »…).
 - Données structurées : `LocalBusiness`, `Service` par réparation, fil d'Ariane.
 - `sitemap.xml`, `robots.txt`, URL canoniques, Open Graph. Anciennes URL `/prestations/*` redirigées (301) vers `/reparations`.
 - Fichiers pré-compressés (Brotli + gzip) : le serveur Node et le proxy Fly ne compressent pas à la volée.

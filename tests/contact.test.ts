@@ -5,7 +5,7 @@ const valid: ContactInput = {
   name: 'Jeanne Martin',
   phone: '06 12 34 56 78',
   email: '',
-  town: 'Angers',
+  town: 'Bordeaux',
   project: 'volets-roulants',
   message: 'Le volet de la cuisine est bloqué à mi-hauteur.',
 }
@@ -48,8 +48,8 @@ describe('contactSchema', () => {
 
 describe('formatContactEmail', () => {
   it('met le sujet sur une seule ligne, même si la commune contient un retour à la ligne', () => {
-    const mail = formatContactEmail(contactSchema.parse({ ...valid, town: 'Angers\nCentre' }))
-    expect(mail.subject).toBe('Demande d’intervention · Volets roulants · Angers Centre')
+    const mail = formatContactEmail(contactSchema.parse({ ...valid, town: 'Bordeaux\nCaudéran' }))
+    expect(mail.subject).toBe('Demande d’intervention · Volets roulants · Bordeaux Caudéran')
   })
 
   it('présente le téléphone lisiblement et ne répond au client que s’il a laissé un e-mail', () => {

@@ -26,12 +26,12 @@ export const business = {
 
   address: {
     street: '12 rue des Artisans',
-    postalCode: '49000',
-    city: 'Angers',
-    region: 'Pays de la Loire',
+    postalCode: '33000',
+    city: 'Bordeaux',
+    region: 'Nouvelle-Aquitaine',
     country: 'FR',
   },
-  geo: { latitude: 47.4784, longitude: -0.5632 },
+  geo: { latitude: 44.8378, longitude: -0.5792 },
 
   /** Texte affiché sur le site. */
   hours: [
@@ -47,8 +47,9 @@ export const business = {
   serviceArea: {
     radiusKm: 30,
     towns: [
-      'Angers', 'Avrillé', 'Beaucouzé', 'Les Ponts-de-Cé', 'Saint-Barthélemy-d’Anjou',
-      'Trélazé', 'Écouflant', 'Montreuil-Juigné', 'Brissac Loire Aubance', 'Chalonnes-sur-Loire',
+      'Bordeaux', 'Mérignac', 'Pessac', 'Talence', 'Bègles', 'Villenave-d’Ornon',
+      'Le Bouscat', 'Bruges', 'Eysines', 'Lormont', 'Cenon', 'Floirac', 'Gradignan',
+      'Blanquefort', 'Saint-Médard-en-Jalles', 'Le Haillan', 'Artigues-près-Bordeaux',
     ],
   },
 
@@ -71,7 +72,7 @@ export const business = {
     form: 'SARL',
     capital: '10 000 €',
     siret: '000 000 000 00000',
-    rcs: 'RCS Angers 000 000 000',
+    rcs: 'RCS Bordeaux 000 000 000',
     vat: 'FR00 000000000',
     publisher: 'Prénom Nom, gérant',
     /** Responsabilité civile professionnelle (et décennale si l'activité l'exige). */
