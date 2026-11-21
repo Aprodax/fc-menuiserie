@@ -1,0 +1,32 @@
+{
+  "name": "site-menuiserie",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "nuxt build && nuxt preview",
+    "deploy": "fly deploy",
+    "preview:cloudflare": "NITRO_PRESET=cloudflare_module nuxt build && wrangler dev",
+    "deploy:cloudflare": "NITRO_PRESET=cloudflare_module nuxt build && wrangler deploy",
+    "typecheck": "nuxt typecheck",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@iconify-json/lucide": "^1.2.157",
+    "@nuxt/fonts": "^1.2.0",
+    "@nuxt/icon": "^2.6.3",
+    "@nuxtjs/seo": "^6.0.1",
+    "nuxt": "^4.6.4",
+    "vue": "^3.5.46",
+    "vue-router": "^5.5.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "^6.0.3",
+    "vue-tsc": "^3.3.14",
+    "wrangler": "^4.165.0"
+  },
+  "packageManager": "pnpm@11.23.0"
+}

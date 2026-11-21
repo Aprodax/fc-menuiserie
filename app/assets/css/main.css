@@ -1,0 +1,240 @@
+/* ==========================================================================
+   Jetons de design
+   Les couleurs de marque reprennent les teintes RAL de la menuiserie alu :
+   7016 gris anthracite (la plus posée en France) et un blanc cassé.
+   Contrastes vérifiés (WCAG AA) : voir les commentaires.
+   ========================================================================== */
+:root {
+  --c-bg: #ffffff;
+  --c-surface: #f3f3f1;          /* gris alu très clair */
+  --c-ink: #1b1d1f;              /* texte : 16.9:1 sur blanc */
+  --c-ink-2: #50555a;            /* texte secondaire : 7.5:1 sur blanc, 6.8:1 sur surface */
+  --c-line: #dededa;             /* filets décoratifs */
+  --c-line-strong: #8a9096;      /* bordures de champs : 3.2:1 */
+  --c-anthracite: #383e42;       /* RAL 7016 */
+  --c-anthracite-deep: #2a2e31;
+  --c-accent: #a8431c;           /* cuivre : cotes et détails, 6:1 sur blanc */
+  --c-glass: #e6edf0;
+  --c-on-dark: #f3f3f1;          /* 9.8:1 sur 7016 */
+  --c-on-dark-2: #c5c9cc;        /* 6.5:1 sur 7016 */
+  --c-accent-on-dark: #e8a07f;   /* 5:1 sur 7016 */
+  --c-error: #b3261e;            /* 6.5:1 */
+  --c-success: #1d6b3f;          /* 6.5:1 */
+  --c-focus: var(--c-accent);
+
+  --fs-small: 0.9375rem;                                  /* 15 px */
+  --fs-body: 1.0625rem;                                   /* 17 px */
+  --fs-lead: clamp(1.125rem, 1.04rem + 0.4vw, 1.3125rem); /* 18 → 21 px */
+  --fs-h3: clamp(1.1875rem, 1.12rem + 0.3vw, 1.375rem);   /* 19 → 22 px */
+  --fs-h2: clamp(1.875rem, 1.45rem + 1.9vw, 3rem);        /* 30 → 48 px */
+  --fs-h1: clamp(2.375rem, 1.6rem + 3.4vw, 4.5rem);       /* 38 → 72 px */
+
+  --gutter: 20px;
+  --max: 1240px;
+  --header-h: 64px;
+  --section-y: clamp(64px, 9vw, 128px);
+
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 24px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --t-fast: 150ms;
+  --t-base: 220ms;
+}
+
+@media (min-width: 768px) {
+  :root { --gutter: 32px; --header-h: 72px; }
+}
+@media (min-width: 1024px) {
+  :root { --gutter: 48px; }
+}
+
+/* ==========================================================================
+   Base
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  /* Écrit en toutes lettres (pas de variable) pour que @nuxt/fonts détecte et héberge la police. */
+  font-family: 'Instrument Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html.menu-open { overflow: hidden; }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-weight: 600;
+  text-wrap: balance;
+}
+h1 { font-size: var(--fs-h1); line-height: 1.04; letter-spacing: -0.03em; }
+h2 { font-size: var(--fs-h2); line-height: 1.1; letter-spacing: -0.022em; }
+h3 { font-size: var(--fs-h3); line-height: 1.3; letter-spacing: -0.01em; }
+
+p { margin: 0; }
+ul, ol { margin: 0; padding: 0; }
+img, svg { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.2em; }
+a:hover { text-decoration-thickness: 2px; }
+
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+:focus-visible {
+  outline: 3px solid var(--c-focus);
+  outline-offset: 3px;
+}
+[tabindex='-1']:focus { outline: none; }
+
+::selection { background: var(--c-anthracite); color: #fff; }
+
+/* ==========================================================================
+   Utilitaires
+   ========================================================================== */
+.container {
+  width: min(100% - 2 * var(--gutter), var(--max));
+  margin-inline: auto;
+}
+
+.section { padding-block: var(--section-y); }
+.section--surface { background: var(--c-surface); }
+.section--dark {
+  --c-focus: #ffffff;
+  background: var(--c-anthracite);
+  color: var(--c-on-dark);
+}
+
+.section-head {
+  display: grid;
+  gap: 16px;
+  margin-bottom: clamp(32px, 5vw, 64px);
+  max-width: 46rem;
+}
+
+.lead {
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+  color: var(--c-ink-2);
+  max-width: 40em;
+}
+.section--dark .lead { color: var(--c-on-dark-2); }
+
+.muted { color: var(--c-ink-2); }
+.small { font-size: var(--fs-small); }
+.tabular { font-variant-numeric: tabular-nums; }
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: -100px;
+  z-index: 100;
+  padding: 12px 18px;
+  border-radius: var(--radius-sm);
+  background: var(--c-ink);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip-link:focus { top: 12px; }
+
+/* Papier millimétré discret, pour les dessins techniques */
+.paper {
+  background-color: #fafaf8;
+  background-image:
+    linear-gradient(to right, #ecece8 1px, transparent 1px),
+    linear-gradient(to bottom, #ecece8 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px -1px;
+}
+
+/* ==========================================================================
+   Boutons
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 26px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color var(--t-base) var(--ease-out), border-color var(--t-base) var(--ease-out), color var(--t-base) var(--ease-out), transform var(--t-fast) var(--ease-out);
+}
+.btn:active { transform: scale(0.98); }
+.btn .iconify, .btn svg { width: 20px; height: 20px; flex: none; }
+
+.btn--primary { background: var(--c-anthracite); color: #fff; }
+.btn--primary:hover { background: var(--c-anthracite-deep); }
+
+.btn--secondary { border-color: var(--c-line-strong); color: var(--c-ink); background: transparent; }
+.btn--secondary:hover { border-color: var(--c-ink); background: var(--c-surface); }
+
+.btn--light { background: #fff; color: var(--c-ink); }
+.btn--light:hover { background: var(--c-surface); }
+
+.btn--outline-light { border-color: rgb(255 255 255 / 0.45); color: #fff; background: transparent; }
+.btn--outline-light:hover { border-color: #fff; background: rgb(255 255 255 / 0.08); }
+
+.btn--sm { min-height: 44px; padding: 0 20px; font-size: var(--fs-small); }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: 12px; }
+@media (max-width: 479px) {
+  .btn-row .btn { width: 100%; }
+}
+
+/* Lien texte avec flèche */
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.link-arrow svg { width: 18px; height: 18px; transition: transform var(--t-base) var(--ease-out); }
+.link-arrow:hover svg { transform: translateX(3px); }
+.link-arrow:hover span { text-decoration: underline; text-underline-offset: 0.2em; }
+
+/* ==========================================================================
+   Mouvement réduit
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
