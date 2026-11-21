@@ -35,4 +35,17 @@ useSchemaOrg([
 .crumbs a:hover { text-decoration: underline; color: var(--c-ink); }
 .crumbs svg { width: 16px; height: 16px; margin-right: 4px; }
 .crumbs [aria-current] { color: var(--c-ink); }
+
+/* Sur mobile, le titre de la page suffit : le fil devient un simple lien vers la page parente. */
+@media (max-width: 639px) {
+  .crumbs li:last-child {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .crumbs li:nth-last-child(2) svg { display: none; }
+}
 </style>

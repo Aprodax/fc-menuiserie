@@ -4,8 +4,6 @@
  * le formulaire de contact et le plan du site suivent automatiquement.
  */
 export type PictoName = 'window' | 'slider' | 'door' | 'shutter' | 'gate' | 'pergola'
-/** Teinte de la prestation (voir les jetons --t-* dans main.css). */
-export type Tint = 'ciel' | 'lagon' | 'terre' | 'ocre' | 'sauge' | 'ardoise'
 
 export interface Service {
   slug: string
@@ -13,7 +11,6 @@ export interface Service {
   /** Mot-clé principal, utilisé dans le titre de la page pour Google. */
   keyword: string
   picto: PictoName
-  tint: Tint
   excerpt: string
   intro: string
   types: { name: string, text: string }[]
@@ -26,7 +23,6 @@ export const services: Service[] = [
     title: 'Fenêtres et portes-fenêtres',
     keyword: 'Fenêtres aluminium',
     picto: 'window',
-    tint: 'ciel',
     excerpt: 'À la française, oscillo-battantes ou fixes, en double ou triple vitrage.',
     intro: 'Des fenêtres aluminium à rupture de pont thermique, fabriquées à vos dimensions, en construction neuve comme en rénovation. Leurs profilés fins laissent entrer davantage de lumière, sans rien céder sur l’isolation.',
     types: [
@@ -48,7 +44,6 @@ export const services: Service[] = [
     title: 'Baies vitrées coulissantes',
     keyword: 'Baies vitrées coulissantes aluminium',
     picto: 'slider',
-    tint: 'lagon',
     excerpt: 'De deux à six vantaux, à galandage ou en angle, pour ouvrir grand sur le jardin.',
     intro: 'La baie coulissante est le point fort de l’aluminium : sa rigidité autorise de grandes surfaces vitrées avec des montants très fins. Elle se manœuvre sans effort et ne prend aucune place à l’ouverture.',
     types: [
@@ -69,7 +64,6 @@ export const services: Service[] = [
     title: 'Portes d’entrée',
     keyword: 'Portes d’entrée aluminium',
     picto: 'door',
-    tint: 'terre',
     excerpt: 'Pleines ou vitrées, isolantes et sécurisées, dans le style de votre maison.',
     intro: 'Une porte d’entrée aluminium réunit isolation, sécurité et stabilité dans le temps : elle ne gonfle pas, ne se déforme pas et ne demande pratiquement aucun entretien.',
     types: [
@@ -90,7 +84,6 @@ export const services: Service[] = [
     title: 'Volets roulants et battants',
     keyword: 'Volets aluminium',
     picto: 'shutter',
-    tint: 'ocre',
     excerpt: 'Roulants, battants ou coulissants, manuels, motorisés ou solaires.',
     intro: 'Les volets aluminium protègent du soleil, du froid et des regards. Nous les posons avec des fenêtres neuves comme sur des menuiseries existantes.',
     types: [
@@ -110,7 +103,6 @@ export const services: Service[] = [
     title: 'Portails et clôtures',
     keyword: 'Portails aluminium',
     picto: 'gate',
-    tint: 'ardoise',
     excerpt: 'Battants ou coulissants, motorisés, assortis au portillon et à la clôture.',
     intro: 'Un portail aluminium ne rouille pas et garde son aspect pendant des années. Nous réalisons l’ensemble — portail, portillon, clôture et motorisation — dans la même teinte.',
     types: [
@@ -130,7 +122,6 @@ export const services: Service[] = [
     title: 'Pergolas bioclimatiques',
     keyword: 'Pergolas bioclimatiques',
     picto: 'pergola',
-    tint: 'sauge',
     excerpt: 'Des lames orientables pour profiter de la terrasse, au soleil comme à l’ombre.',
     intro: 'La pergola bioclimatique protège du soleil et de la pluie grâce à ses lames orientables. Adossée à la maison ou autoportée, elle prolonge la pièce de vie à l’extérieur.',
     types: [

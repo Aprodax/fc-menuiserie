@@ -1,5 +1,13 @@
 <script setup lang="ts">
 import { business, telHref } from '#shared/business'
+
+// Depuis une page prestation, le devis arrive avec le projet déjà choisi.
+const route = useRoute()
+const devisTo = computed(() =>
+  route.path.startsWith('/prestations/') && typeof route.params.slug === 'string'
+    ? { path: '/contact', query: { projet: route.params.slug } }
+    : '/contact',
+)
 </script>
 
 <!--
@@ -14,7 +22,7 @@ import { business, telHref } from '#shared/business'
         Appeler
         <span class="visually-hidden">le {{ business.phone.display }}</span>
       </a>
-      <NuxtLink to="/contact" class="btn btn--primary">Devis gratuit</NuxtLink>
+      <NuxtLink :to="devisTo" class="btn btn--primary">Devis gratuit</NuxtLink>
     </div>
   </div>
 </template>

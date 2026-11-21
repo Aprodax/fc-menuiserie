@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { business, fullAddress, mailHref, mapsHref, telHref } from '#shared/business'
-import { services } from '#shared/services'
 
 const year = new Date().getFullYear()
 </script>
@@ -38,19 +37,12 @@ const year = new Date().getFullYear()
         </dl>
       </div>
 
-      <nav aria-label="Prestations">
-        <h2 class="site-footer__title">Prestations</h2>
-        <ul role="list" class="site-footer__list">
-          <li v-for="s in services" :key="s.slug">
-            <NuxtLink :to="`/prestations/${s.slug}`">{{ s.title }}</NuxtLink>
-          </li>
-        </ul>
-      </nav>
     </div>
 
     <div class="container site-footer__bottom">
       <p>© {{ year }} {{ business.name }}</p>
       <ul role="list">
+        <li><NuxtLink to="/prestations">Prestations</NuxtLink></li>
         <li><NuxtLink to="/contact">Contact</NuxtLink></li>
         <li><NuxtLink to="/mentions-legales">Mentions légales</NuxtLink></li>
       </ul>
@@ -121,6 +113,6 @@ const year = new Date().getFullYear()
   .site-footer__grid { grid-template-columns: 1fr 1fr; }
 }
 @media (min-width: 1024px) {
-  .site-footer__grid { grid-template-columns: 1.3fr 1fr 1fr 1fr; gap: 48px; }
+  .site-footer__grid { grid-template-columns: 1.4fr 1fr 1fr; gap: 64px; }
 }
 </style>

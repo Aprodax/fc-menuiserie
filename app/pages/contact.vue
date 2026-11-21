@@ -16,7 +16,7 @@ useSeoMeta({
     />
 
     <div class="container contact">
-      <aside class="contact__quick tint-ciel" aria-labelledby="quick-title">
+      <aside class="contact__quick" aria-labelledby="quick-title">
         <h2 id="quick-title" class="contact__label">Le plus rapide : nous appeler</h2>
         <a :href="telHref" class="contact__phone tabular">
           <Icon name="lucide:phone" aria-hidden="true" />
@@ -82,7 +82,7 @@ useSeoMeta({
   gap: 8px;
   padding: 24px;
   border-radius: var(--radius-xl);
-  background: var(--tint);
+  background: var(--c-surface);
 }
 .contact__phone {
   display: inline-flex;
@@ -94,7 +94,7 @@ useSeoMeta({
   letter-spacing: -0.01em;
   text-decoration: none;
 }
-.contact__phone svg { width: 28px; height: 28px; color: var(--tint-ink); }
+.contact__phone svg { width: 28px; height: 28px; color: var(--c-accent); }
 .contact__phone:hover { text-decoration: underline; text-decoration-thickness: 2px; }
 .contact__mail { margin-top: 8px; padding-top: 16px; border-top: 1px solid rgb(0 0 0 / 0.08); }
 .contact__mail a { overflow-wrap: anywhere; }
