@@ -76,12 +76,12 @@ Le projet sait aussi se construire pour Cloudflare (`wrangler.jsonc`) : les page
 ```bash
 npx wrangler login
 npx wrangler secret put NUXT_RESEND_API_KEY
-pnpm run deploy:cloudflare     # → https://site-menuiserie.<compte>.workers.dev
+pnpm run deploy:cloudflare     # → https://fc-menuiserie.<compte>.workers.dev
 ```
 
-Domaine personnalisé : ajouter le domaine au compte Cloudflare, puis *Workers & Pages → site-menuiserie → Settings → Domains & Routes → Add custom domain*. Penser à mettre la vraie URL dans `business.url` (sitemap et URL canoniques en dépendent).
+Domaine personnalisé : ajouter le domaine au compte Cloudflare, puis *Workers & Pages → fc-menuiserie → Settings → Domains & Routes → Add custom domain*. Penser à mettre la vraie URL dans `business.url` (sitemap et URL canoniques en dépendent).
 
-Déploiement automatique à chaque push : *Workers & Pages → site-menuiserie → Settings → Builds → Connect* (dépôt GitHub, commande de build `pnpm build`, commande de déploiement `npx wrangler deploy`).
+Déploiement automatique à chaque push : *Workers & Pages → fc-menuiserie → Settings → Builds → Connect* (dépôt GitHub, commande de build `pnpm build`, commande de déploiement `npx wrangler deploy`).
 
 ## Choix de design
 

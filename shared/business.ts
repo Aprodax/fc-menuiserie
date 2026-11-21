@@ -11,8 +11,11 @@ export const business = {
 
   name: 'Menuiserie Exemple',
   activity: 'Menuiserie aluminium',
-  /** Adresse définitive du site, sans slash final. */
-  url: 'https://www.menuiserie-exemple.fr',
+  /**
+   * Adresse publique du site, sans slash final (sitemap, URL canoniques, fiche Google).
+   * À remplacer par le nom de domaine le jour où il existe.
+   */
+  url: 'https://fc-menuiserie.fly.dev',
 
   // Numéro réservé par l'ARCEP aux œuvres de fiction : il n'appartient à personne.
   phone: { display: '02 61 91 00 00', e164: '+33261910000' },

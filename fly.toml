@@ -1,5 +1,5 @@
 # Déploiement Fly.io : `fly deploy` construit le Dockerfile sur les serveurs de Fly.
-app = "site-menuiserie"
+app = "fc-menuiserie"
 primary_region = "cdg"
 
 [build]
