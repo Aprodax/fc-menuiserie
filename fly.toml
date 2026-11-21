@@ -1,31 +1,31 @@
-# Déploiement Fly.io : `fly deploy` construit le Dockerfile sur les serveurs de Fly.
-app = "fc-menuiserie"
-primary_region = "cdg"
+# fly.toml app configuration file generated for fc-menuiserie on 2026-11-21T18:07:18Z
+#
+# See https://docs.fly.io/reference/configuration for information about how to use this file.
+#
+
+app = 'fc-menuiserie'
+primary_region = 'cdg'
 
 [build]
-
 [http_service]
-  # Doit correspondre au PORT du Dockerfile (8080, la valeur attendue par Fly).
   internal_port = 8080
   force_https = true
-  # La machine se met en veille sans visiteur et se réveille à la première requête
-  # (moins d'une seconde) : le site ne coûte presque rien quand personne ne le consulte.
-  auto_stop_machines = "suspend"
+  auto_stop_machines = 'suspend'
   auto_start_machines = true
   min_machines_running = 0
 
   [http_service.concurrency]
-    type = "requests"
-    soft_limit = 200
+    type = 'requests'
     hard_limit = 250
+    soft_limit = 200
 
   [[http_service.checks]]
-    grace_period = "10s"
-    interval = "30s"
-    method = "GET"
-    path = "/"
-    timeout = "5s"
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '10s'
+    method = 'GET'
+    path = '/'
 
 [[vm]]
-  size = "shared-cpu-1x"
-  memory = "256mb"
+  size = 'shared-cpu-1x'
+  memory = '256mb'
