@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const tints = ['tint-ciel', 'tint-lagon', 'tint-ocre', 'tint-terre']
 const steps = [
   { title: 'Visite et prise de cotes', text: 'Nous venons chez vous pour comprendre le projet, vous conseiller et mesurer chaque ouverture.' },
   { title: 'Devis détaillé', text: 'Un devis clair, poste par poste : modèles, vitrages, teintes et délais. Sans engagement.' },
@@ -9,7 +10,7 @@ const steps = [
 
 <template>
   <ol class="steps" role="list">
-    <li v-for="(step, i) in steps" :key="step.title" class="step">
+    <li v-for="(step, i) in steps" :key="step.title" class="step" :class="tints[i]">
       <span class="step__num tabular" aria-hidden="true">{{ i + 1 }}</span>
       <h3 class="step__title"><span class="visually-hidden">Étape {{ i + 1 }} : </span>{{ step.title }}</h3>
       <p class="step__text">{{ step.text }}</p>
@@ -34,10 +35,12 @@ const steps = [
   place-items: center;
   width: 40px;
   height: 40px;
-  border: 1px solid var(--c-line-strong);
-  border-radius: 999px;
-  font-weight: 600;
+  border-radius: 12px;
+  background: var(--tint);
+  color: var(--tint-ink);
+  font-weight: 700;
   font-size: var(--fs-small);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--tint-ink) 18%, transparent);
 }
 .step__text { color: var(--c-ink-2); }
 

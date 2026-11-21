@@ -30,7 +30,7 @@ useSchemaOrg([
 </script>
 
 <template>
-  <div>
+  <div :class="`tint-${service.tint}`">
     <section class="detail-hero" aria-labelledby="service-title">
       <div class="container">
         <AppBreadcrumbs
@@ -48,13 +48,13 @@ useSchemaOrg([
               <NuxtLink :to="{ path: '/contact', query: { projet: service.slug } }" class="btn btn--primary">
                 Demander un devis
               </NuxtLink>
-              <a :href="telHref" class="btn btn--secondary">
+              <a :href="telHref" class="btn btn--glass glass">
                 <Icon name="lucide:phone" aria-hidden="true" />
                 <span class="tabular">{{ business.phone.display }}</span>
               </a>
             </div>
           </div>
-          <div class="detail-hero__visual paper">
+          <div class="detail-hero__visual glass">
             <ServicePicto :name="service.picto" class="detail-hero__picto" />
           </div>
         </div>
@@ -99,8 +99,8 @@ useSchemaOrg([
         <h2 id="others-title" class="others__title">Nos autres prestations</h2>
         <ul role="list" class="others">
           <li v-for="s in others" :key="s.slug">
-            <NuxtLink :to="`/prestations/${s.slug}`" class="other">
-              <ServicePicto :name="s.picto" class="other__picto" />
+            <NuxtLink :to="`/prestations/${s.slug}`" class="other" :class="`tint-${s.tint}`">
+              <span class="other__icon" aria-hidden="true"><ServicePicto :name="s.picto" /></span>
               <span>{{ s.title }}</span>
             </NuxtLink>
           </li>
@@ -116,7 +116,14 @@ useSchemaOrg([
 </template>
 
 <style scoped>
-.detail-hero { padding-block: 16px var(--section-y); }
+/* Haut de page lavé de la teinte de la prestation, qui passe sous l'en-tête de verre. */
+.detail-hero {
+  margin-top: calc(-1 * var(--header-h));
+  padding-block: calc(var(--header-h) + 8px) var(--section-y);
+  background:
+    radial-gradient(90% 60% at 100% 0%, color-mix(in srgb, var(--tint-ink) 22%, var(--tint)) 0%, transparent 70%),
+    linear-gradient(180deg, var(--tint) 0%, var(--c-bg) 100%);
+}
 .detail-hero__grid { display: grid; gap: 40px; margin-top: clamp(16px, 3vw, 40px); align-items: center; }
 .detail-hero__text { display: grid; gap: 24px; justify-items: start; }
 
@@ -124,10 +131,16 @@ useSchemaOrg([
   display: grid;
   place-items: center;
   aspect-ratio: 4 / 3;
-  border: 1px solid var(--c-line);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
 }
-.detail-hero__picto { --picto-stroke: 2px; --picto-fill: #fafaf8; width: 56%; height: auto; }
+.detail-hero__picto {
+  --picto-stroke: 2px;
+  --picto-fill: #f7f9fb;
+  --picto-hint: color-mix(in srgb, var(--tint-ink) 55%, transparent);
+  width: 56%;
+  height: auto;
+  color: var(--tint-ink);
+}
 
 .types {
   list-style: none;
@@ -151,7 +164,7 @@ useSchemaOrg([
   border-top: 1px solid var(--c-line);
 }
 .options__list li:last-child { border-bottom: 1px solid var(--c-line); }
-.options__list svg { width: 22px; height: 22px; color: var(--c-accent); margin-top: 2px; }
+.options__list svg { width: 22px; height: 22px; color: var(--tint-ink); margin-top: 2px; }
 
 .others__title { font-size: var(--fs-h3); margin-bottom: 20px; }
 .others { list-style: none; display: grid; gap: 8px; }
@@ -169,7 +182,16 @@ useSchemaOrg([
   transition: box-shadow var(--t-base) var(--ease-out);
 }
 .other:hover { box-shadow: inset 0 0 0 1px var(--c-line-strong); }
-.other__picto { width: 36px; height: 36px; }
+.other__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: var(--tint-ink);
+}
+.other__icon :deep(.picto) { --picto-fill: var(--tint-ink); --picto-hint: rgb(255 255 255 / 0.65); width: 30px; height: 30px; color: #fff; }
 
 @media (min-width: 640px) {
   .types { grid-template-columns: repeat(2, 1fr); }
@@ -182,6 +204,7 @@ useSchemaOrg([
   .options { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 80px; }
   .others { grid-template-columns: repeat(5, 1fr); }
   .other { flex-direction: column; align-items: flex-start; justify-content: space-between; min-height: 140px; padding: 20px; }
-  .other__picto { width: 44px; height: 44px; }
+  .other__icon { width: 48px; height: 48px; border-radius: 13px; }
+  .other__icon :deep(.picto) { width: 36px; height: 36px; }
 }
 </style>

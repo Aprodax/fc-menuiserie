@@ -29,8 +29,8 @@ const benefits = [
 
     <section class="container" aria-label="Liste des prestations">
       <ul role="list" class="service-list">
-        <li v-for="s in services" :key="s.slug" class="service-row">
-          <ServicePicto :name="s.picto" class="service-row__picto" />
+        <li v-for="s in services" :key="s.slug" class="service-row" :class="`tint-${s.tint}`">
+          <span class="service-row__icon" aria-hidden="true"><ServicePicto :name="s.picto" /></span>
           <div class="service-row__main">
             <h2 class="service-row__title">
               <NuxtLink :to="`/prestations/${s.slug}`" class="service-row__link">{{ s.title }}</NuxtLink>
@@ -70,13 +70,32 @@ const benefits = [
 .service-row {
   position: relative;
   display: grid;
-  grid-template-columns: 48px 1fr;
+  grid-template-columns: 52px 1fr;
   gap: 8px 16px;
   padding-block: 28px;
   border-top: 1px solid var(--c-line);
   transition: background-color var(--t-base) var(--ease-out);
 }
-.service-row__picto { width: 48px; height: 48px; }
+/* Pastille colorée de la prestation, comme une icône d'app */
+.service-row__icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: var(--tint-ink);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 4px 12px -6px color-mix(in srgb, var(--tint-ink) 70%, transparent);
+  transition: transform 320ms var(--ease-spring);
+}
+.service-row__icon :deep(.picto) {
+  --picto-stroke: 1.6px;
+  --picto-fill: var(--tint-ink);
+  --picto-hint: rgb(255 255 255 / 0.65);
+  width: 38px;
+  height: 38px;
+  color: #fff;
+}
+.service-row:hover .service-row__icon { transform: scale(1.06) rotate(-2deg); }
 .service-row__main { display: grid; gap: 6px; }
 .service-row__title { font-size: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem); letter-spacing: -0.015em; }
 
@@ -111,7 +130,8 @@ const benefits = [
 
 @media (min-width: 768px) {
   .service-row { grid-template-columns: 64px minmax(0, 1fr) minmax(0, 1fr) 24px; gap: 32px; align-items: center; padding-block: 36px; }
-  .service-row__picto { width: 64px; height: 64px; }
+  .service-row__icon { width: 64px; height: 64px; border-radius: 18px; }
+  .service-row__icon :deep(.picto) { width: 46px; height: 46px; }
   .service-row__types { grid-column: auto; }
   .service-row__arrow { display: block; width: 22px; height: 22px; color: var(--c-ink-2); transition: transform var(--t-base) var(--ease-out); }
   .service-row:hover .service-row__arrow { transform: translateX(4px); color: var(--c-ink); }

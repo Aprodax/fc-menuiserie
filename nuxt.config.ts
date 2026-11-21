@@ -22,6 +22,7 @@ export default defineNuxtConfig({
   app: {
     head: {
       htmlAttrs: { lang: 'fr' },
+      viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
       link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
       meta: [{ name: 'theme-color', content: '#ffffff' }],
     },
@@ -88,6 +89,9 @@ export default defineNuxtConfig({
     // Toutes les pages sont générées au build ; le serveur ne fait que les servir
     // et exécuter /api/contact.
     preset,
+    // Fichiers pré-compressés (Brotli + gzip) au build : le serveur Node ne compresse pas
+    // à la volée et le proxy de Fly non plus.
+    compressPublicAssets: { gzip: true, brotli: true },
     prerender: {
       crawlLinks: true,
       routes: ['/', '/sitemap.xml', '/robots.txt'],

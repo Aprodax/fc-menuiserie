@@ -43,7 +43,7 @@ onBeforeUnmount(() => {
 
 <template>
   <header class="site-header">
-    <div class="container site-header__bar">
+    <div class="site-header__bar glass">
       <NuxtLink to="/" class="brand">
         <BrandMark />
         <span class="brand__name">{{ business.name }}</span>
@@ -60,8 +60,7 @@ onBeforeUnmount(() => {
       <div class="site-header__actions">
         <a :href="telHref" class="header-phone">
           <Icon name="lucide:phone" aria-hidden="true" />
-          <span class="header-phone__number tabular">{{ business.phone.display }}</span>
-          <span class="visually-hidden header-phone__label">Appeler le {{ business.phone.display }}</span>
+          <span class="tabular">{{ business.phone.display }}</span>
         </a>
         <NuxtLink to="/contact" class="btn btn--primary btn--sm header-cta">Demander un devis</NuxtLink>
         <button
@@ -78,52 +77,64 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <Transition name="menu">
-      <div v-show="open" id="menu-mobile" ref="panel" class="mobile-menu">
-        <nav class="container" aria-label="Menu">
-          <ul role="list" class="mobile-menu__list">
+    <Transition name="scrim">
+      <div v-show="open" class="menu-scrim" aria-hidden="true" @click="close()" />
+    </Transition>
+    <Transition name="sheet">
+      <div v-show="open" id="menu-mobile" ref="panel" class="menu-sheet glass">
+        <nav aria-label="Menu">
+          <ul role="list" class="menu-sheet__list">
             <li v-for="item in mainNav" :key="item.to">
-              <NuxtLink :to="item.to" class="mobile-menu__link">
+              <NuxtLink :to="item.to" class="menu-sheet__link">
                 {{ item.label }}
                 <Icon name="lucide:chevron-right" aria-hidden="true" />
               </NuxtLink>
             </li>
           </ul>
-          <div class="mobile-menu__contact">
-            <NuxtLink to="/contact" class="btn btn--primary">Demander un devis gratuit</NuxtLink>
-            <a :href="telHref" class="btn btn--secondary">
-              <Icon name="lucide:phone" aria-hidden="true" />
-              <span class="tabular">{{ business.phone.display }}</span>
-            </a>
-          </div>
         </nav>
+        <div class="menu-sheet__contact">
+          <NuxtLink to="/contact" class="btn btn--primary">Demander un devis gratuit</NuxtLink>
+          <a :href="telHref" class="btn btn--secondary">
+            <Icon name="lucide:phone" aria-hidden="true" />
+            <span class="tabular">{{ business.phone.display }}</span>
+          </a>
+        </div>
       </div>
     </Transition>
   </header>
 </template>
 
 <style scoped>
+/* L'en-tête est une capsule de verre qui flotte au-dessus du contenu. */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 40;
-  background: rgb(255 255 255 / 0.97);
-  border-bottom: 1px solid var(--c-line);
+  padding-top: max(var(--header-gap), env(safe-area-inset-top));
+  padding-inline: max(12px, env(safe-area-inset-left)) max(12px, env(safe-area-inset-right));
+  pointer-events: none;
 }
 
 .site-header__bar {
   display: flex;
   align-items: center;
-  gap: 16px;
-  height: var(--header-h);
+  gap: 12px;
+  width: min(100%, calc(var(--max) + 48px));
+  height: var(--header-bar);
+  margin-inline: auto;
+  padding: 0 6px 0 10px;
+  border-radius: 999px;
+  pointer-events: auto;
 }
 
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   min-height: 44px;
   margin-right: auto;
+  padding-right: 6px;
+  border-radius: 999px;
   font-weight: 600;
   font-size: 1.0625rem;
   letter-spacing: -0.01em;
@@ -131,37 +142,25 @@ onBeforeUnmount(() => {
 }
 
 .site-nav { display: none; }
-.site-nav ul { display: flex; gap: 4px; list-style: none; }
+.site-nav ul { display: flex; gap: 2px; list-style: none; }
 .site-nav__link {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  padding: 0 14px;
+  padding: 0 16px;
   border-radius: 999px;
   color: var(--c-ink-2);
   font-weight: 500;
   text-decoration: none;
   transition: color var(--t-fast), background-color var(--t-fast);
 }
-.site-nav__link:hover { color: var(--c-ink); background: var(--c-surface); }
-.site-nav__link.router-link-active { color: var(--c-ink); font-weight: 600; background: var(--c-surface); }
+.site-nav__link:hover { color: var(--c-ink); background: rgb(0 0 0 / 0.05); }
+.site-nav__link.router-link-active { color: var(--c-ink); font-weight: 600; background: rgb(0 0 0 / 0.07); }
 
-.site-header__actions { display: flex; align-items: center; gap: 8px; }
+.site-header__actions { display: flex; align-items: center; gap: 6px; }
 
-.header-phone {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-width: 44px;
-  min-height: 44px;
-  border-radius: 999px;
-  font-weight: 600;
-  text-decoration: none;
-}
-.header-phone svg { width: 20px; height: 20px; }
-.header-phone__number { display: none; }
-
+/* Sur mobile, le téléphone est dans la barre d'action du bas : pas de doublon ici. */
+.header-phone { display: none; }
 .header-cta { display: none; }
 
 .menu-button {
@@ -170,53 +169,81 @@ onBeforeUnmount(() => {
   justify-content: center;
   width: 44px;
   height: 44px;
-  margin-right: -8px;
   border: 0;
   border-radius: 999px;
-  background: transparent;
+  background: rgb(0 0 0 / 0.05);
+  transition: background-color var(--t-fast), transform var(--t-fast) var(--ease-out);
 }
-.menu-button svg { width: 24px; height: 24px; }
-.menu-button:hover, .header-phone:hover { background: var(--c-surface); }
+.menu-button:active { transform: scale(0.92); }
+.menu-button svg { width: 22px; height: 22px; }
+.menu-button:hover { background: rgb(0 0 0 / 0.09); }
 
-.mobile-menu {
+/* Menu mobile : voile + panneau de verre qui se déploie depuis le bouton. */
+.menu-scrim {
   position: fixed;
-  inset: var(--header-h) 0 0;
+  inset: 0;
+  z-index: -1;
+  background: rgb(20 24 28 / 0.22);
+  pointer-events: auto;
+}
+
+.menu-sheet {
+  position: fixed;
+  top: calc(var(--header-h) + 8px);
+  left: max(12px, env(safe-area-inset-left));
+  right: max(12px, env(safe-area-inset-right));
+  max-height: calc(100dvh - var(--header-h) - 20px);
   overflow-y: auto;
   overscroll-behavior: contain;
-  background: var(--c-bg);
-  padding-bottom: max(24px, env(safe-area-inset-bottom));
+  padding: 8px 20px 20px;
+  border-radius: var(--radius-xl);
+  background: rgb(255 255 255 / 0.78);
+  pointer-events: auto;
+  transform-origin: top right;
 }
-.mobile-menu__list { list-style: none; padding-top: 8px; }
-.mobile-menu__link {
+.menu-sheet__list { list-style: none; }
+.menu-sheet__link {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 64px;
-  border-bottom: 1px solid var(--c-line);
-  font-size: 1.5rem;
+  min-height: 60px;
+  border-bottom: 1px solid rgb(0 0 0 / 0.08);
+  font-size: 1.375rem;
   font-weight: 600;
   letter-spacing: -0.015em;
   text-decoration: none;
 }
-.mobile-menu__link svg { width: 22px; height: 22px; color: var(--c-ink-2); }
-.mobile-menu__link.router-link-exact-active { color: var(--c-accent); }
-.mobile-menu__contact { display: grid; gap: 12px; margin-top: 32px; }
+.menu-sheet__link svg { width: 20px; height: 20px; color: var(--c-ink-2); }
+.menu-sheet__link.router-link-exact-active { color: var(--c-accent); }
+.menu-sheet__contact { display: grid; gap: 10px; margin-top: 20px; }
+.menu-sheet__contact .btn--secondary { background: rgb(255 255 255 / 0.6); }
 
-.menu-enter-active { transition: opacity var(--t-base) var(--ease-out), transform var(--t-base) var(--ease-out); }
-.menu-leave-active { transition: opacity var(--t-fast) ease-in; }
-.menu-enter-from { opacity: 0; transform: translateY(-8px); }
-.menu-leave-to { opacity: 0; }
+.sheet-enter-active { transition: opacity var(--t-base) var(--ease-out), transform 320ms var(--ease-spring); }
+.sheet-leave-active { transition: opacity var(--t-fast) ease-in, transform var(--t-fast) ease-in; }
+.sheet-enter-from, .sheet-leave-to { opacity: 0; transform: scale(0.92) translateY(-8px); }
+.scrim-enter-active, .scrim-leave-active { transition: opacity var(--t-base) var(--ease-out); }
+.scrim-enter-from, .scrim-leave-to { opacity: 0; }
 
-@media (min-width: 640px) {
-  .header-phone { padding: 0 12px; }
-  .header-phone__number { display: inline; }
-  .header-phone__label { display: none; }
+@media (min-width: 768px) {
+  .site-header__bar { padding: 0 8px 0 14px; }
 }
 
 @media (min-width: 960px) {
   .brand { margin-right: 0; }
   .site-nav { display: block; margin-inline: auto; }
+  .header-phone {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .header-phone svg { width: 18px; height: 18px; }
+  .header-phone:hover { background: rgb(0 0 0 / 0.05); }
   .header-cta { display: inline-flex; }
-  .menu-button, .mobile-menu { display: none !important; }
+  .menu-button, .menu-sheet, .menu-scrim { display: none !important; }
 }
 </style>

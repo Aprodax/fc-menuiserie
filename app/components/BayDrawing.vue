@@ -9,6 +9,14 @@ const hatch = Array.from({ length: 38 }, (_, i) => 20 + i * 16)
 <template>
   <svg class="bay" viewBox="0 0 640 480" role="img" aria-labelledby="bay-title">
     <title id="bay-title">Dessin d’une baie coulissante aluminium à deux vantaux, 2 400 mm de large sur 2 150 mm de haut</title>
+    <defs>
+      <!-- Le ciel qui se reflète dans le vitrage -->
+      <linearGradient id="bay-sky" x1="0" y1="0" x2="0.35" y2="1">
+        <stop offset="0" stop-color="#9cc6e8" />
+        <stop offset="0.55" stop-color="#cfe3f3" />
+        <stop offset="1" stop-color="#f3ece2" />
+      </linearGradient>
+    </defs>
 
     <!-- Sol fini -->
     <g class="ground">
@@ -21,12 +29,12 @@ const hatch = Array.from({ length: 38 }, (_, i) => 20 + i * 16)
 
     <!-- Vantail arrière (droite) -->
     <path class="profile profile--back" fill-rule="evenodd" d="M318 86h206v316H318zM334 102v284h174V102z" />
-    <rect class="glass" x="334" y="102" width="174" height="284" />
+    <rect class="pane" x="334" y="102" width="174" height="284" />
     <path class="reflect" d="M440 172l60-60M458 182l48-48" />
 
     <!-- Vantail avant (gauche) -->
     <path class="profile" fill-rule="evenodd" d="M116 86h214v316H116zM132 102v284h182V102z" />
-    <rect class="glass" x="132" y="102" width="182" height="284" />
+    <rect class="pane" x="132" y="102" width="182" height="284" />
     <path class="reflect" d="M236 172l60-60M254 182l52-52" />
     <rect class="handle" x="319" y="220" width="6" height="52" rx="3" />
 
@@ -52,8 +60,8 @@ const hatch = Array.from({ length: 38 }, (_, i) => 20 + i * 16)
 .ground-line { stroke: var(--c-ink); stroke-width: 1.5; }
 .profile { fill: var(--c-anthracite); }
 .profile--back { fill: #4b5257; }
-.glass { fill: var(--c-glass); }
-.reflect { stroke: #fff; stroke-width: 3; stroke-linecap: round; opacity: 0.9; }
+.pane { fill: url(#bay-sky); }
+.reflect { stroke: #fff; stroke-width: 4; stroke-linecap: round; opacity: 0.75; }
 .handle { fill: #9aa0a5; }
 .arrow { fill: none; stroke: var(--c-ink-2); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .dim path { fill: none; stroke: var(--c-accent); stroke-width: 1.25; }

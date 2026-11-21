@@ -108,6 +108,13 @@ const year = new Date().getFullYear()
   color: var(--c-on-dark-2);
 }
 .site-footer__bottom ul { display: flex; gap: 20px; list-style: none; }
+
+/* Place réservée à la barre d'action mobile, pour qu'elle ne cache pas le bas du pied de page. */
+@media (max-width: 959px) {
+  .site-footer--action-bar .site-footer__bottom {
+    padding-bottom: calc(var(--action-bar-h) + max(24px, env(safe-area-inset-bottom)));
+  }
+}
 .site-footer__bottom a { display: inline-flex; align-items: center; min-height: 44px; }
 
 @media (min-width: 640px) {

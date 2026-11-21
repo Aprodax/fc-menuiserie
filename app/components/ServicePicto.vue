@@ -76,7 +76,7 @@ defineProps<{ name: PictoName }>()
 }
 .picto :deep(*) { vector-effect: non-scaling-stroke; }
 .picto .hint {
-  stroke: var(--c-ink-2);
+  stroke: var(--picto-hint, var(--c-ink-2));
   stroke-dasharray: 3 3;
   stroke-width: calc(var(--picto-stroke, 1.5px) * 0.75);
 }
