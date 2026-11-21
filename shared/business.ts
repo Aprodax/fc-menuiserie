@@ -9,9 +9,9 @@
 export const business = {
   draft: true,
 
-  name: 'Menuiserie Exemple',
+  name: 'FC-Menuiserie',
   /** Métier, repris dans les titres Google : c'est la recherche principale visée. */
-  activity: 'Dépannage de menuiseries aluminium',
+  activity: 'Expert en menuiserie et SAV',
   /**
    * Adresse publique du site, sans slash final (sitemap, URL canoniques, fiche Google).
    * À remplacer par le nom de domaine le jour où il existe.
@@ -56,7 +56,6 @@ export const business = {
   /** Engagements affichés sur l'accueil. ⚠️ N'écris que ce qui est vrai et vérifiable. */
   commitments: [
     { title: 'Réparer plutôt que remplacer', text: 'Nous changeons la pièce en cause, pas toute la menuiserie.' },
-    { title: 'Prix annoncé avant d’intervenir', text: 'Vous savez ce que coûte la réparation avant que nous commencions.' },
     { title: 'Un interlocuteur direct', text: 'Vous parlez au réparateur lui-même, pas à un standard.' },
     { title: 'Toutes marques', text: 'Baies, fenêtres, volets et portes aluminium, quel que soit le fabricant.' },
   ],
@@ -68,7 +67,7 @@ export const business = {
   certifications: [] as { name: string, detail: string }[],
 
   legal: {
-    legalName: 'Menuiserie Exemple SARL',
+    legalName: 'FC-Menuiserie',
     form: 'SARL',
     capital: '10 000 €',
     siret: '000 000 000 00000',

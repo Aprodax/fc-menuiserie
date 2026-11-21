@@ -3,6 +3,13 @@ import { business, telHref } from '#shared/business'
 
 const { city } = business.address
 
+// Autant de colonnes que d'engagements (4 au plus), pour ne jamais laisser de colonne vide.
+const pointCount = business.commitments.length + business.certifications.length
+const pointCols = {
+  '--cols-md': pointCount === 4 ? 2 : Math.min(pointCount, 3),
+  '--cols-lg': Math.min(pointCount, 4),
+}
+
 useSeoMeta({
   // Sur l'accueil, le titre complet est écrit à la main (pas de « · nom du site » ajouté).
   title: `${business.activity} à ${city} · ${business.name}`,
@@ -17,10 +24,9 @@ useSeoMeta({
     <section class="hero" aria-labelledby="hero-title">
       <div class="container hero__grid">
         <div class="hero__text">
-          <h1 id="hero-title">Dépannage de menuiseries aluminium.</h1>
+          <h1 id="hero-title">Expert en menuiserie et SAV</h1>
           <p class="lead">
-            Volet roulant bloqué, baie qui coince, porte de garage en panne, vitre fêlée :
-            nous réparons à {{ city }} et dans un rayon de {{ business.serviceArea.radiusKm }} km.
+            Un problème de baie qui coince, un volet roulant bloqué, une serrure cassée, une vitre fêlée ? Nous intervenons au plus vite pour résoudre votre souci.
           </p>
           <!-- Sur mobile, la barre d'action du bas remplit ce rôle : pas de doublon. -->
           <div class="hero__actions">
@@ -45,7 +51,7 @@ useSeoMeta({
     <section class="section section--surface" aria-labelledby="why-title">
       <div class="container">
         <h2 id="why-title" class="section-title">Un réparateur, pas un vendeur</h2>
-        <ul role="list" class="points">
+        <ul role="list" class="points" :style="pointCols">
           <li v-for="c in business.commitments" :key="c.title" class="point">
             <Icon name="lucide:check" class="point__icon" aria-hidden="true" />
             <div>
@@ -91,7 +97,7 @@ useSeoMeta({
 .point__title { font-size: var(--fs-body); margin-bottom: 2px; }
 
 @media (min-width: 768px) {
-  .points { grid-template-columns: repeat(2, 1fr); gap: 32px 48px; }
+  .points { grid-template-columns: repeat(var(--cols-md, 2), 1fr); gap: 32px 48px; }
 }
 
 @media (min-width: 960px) {
@@ -100,6 +106,6 @@ useSeoMeta({
 
 @media (min-width: 1024px) {
   .hero__grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; }
-  .points { grid-template-columns: repeat(4, 1fr); }
+  .points { grid-template-columns: repeat(var(--cols-lg, 4), 1fr); }
 }
 </style>

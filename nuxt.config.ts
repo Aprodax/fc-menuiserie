@@ -12,6 +12,10 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+  // Ce fichier n'importe business.ts qu'au démarrage (description Google, fiche entreprise…) :
+  // on redémarre le serveur de dev quand il change, sinon ces valeurs resteraient figées.
+  watch: [/shared[\\/]business\.ts$/],
+
   app: {
     head: {
       htmlAttrs: { lang: 'fr' },
