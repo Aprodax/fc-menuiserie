@@ -5,7 +5,8 @@ primary_region = "cdg"
 [build]
 
 [http_service]
-  internal_port = 3000
+  # Doit correspondre au PORT du Dockerfile (8080, la valeur attendue par Fly).
+  internal_port = 8080
   force_https = true
   # La machine se met en veille sans visiteur et se réveille à la première requête
   # (moins d'une seconde) : le site ne coûte presque rien quand personne ne le consulte.
