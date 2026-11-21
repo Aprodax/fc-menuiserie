@@ -17,8 +17,8 @@ export const business = {
    */
   url: 'https://fc-menuiserie.fly.dev',
 
-  // Numéro réservé par l'ARCEP aux œuvres de fiction : il n'appartient à personne.
-  phone: { display: '02 61 91 00 00', e164: '+33261910000' },
+  /** `display` est affiché ; `e164` sert aux liens tel: (un clic sur mobile propose l'appel). */
+  phone: { display: '06 11 77 21 70', e164: '+33611772170' },
   email: 'contact@menuiserie-exemple.fr',
   /** Délai de rappel promis après une demande de devis : ne promets que ce qui est tenable. */
   responseDelay: 'sous 48 heures ouvrées',
